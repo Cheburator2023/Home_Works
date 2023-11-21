@@ -7,6 +7,7 @@ plugins {
 dependencies {
     implementation ("com.google.guava:guava")
     implementation("org.projectlombok:lombok")
+    implementation("org.slf4j:slf4j-api")
 }
 
 tasks {
