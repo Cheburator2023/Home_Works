@@ -1,5 +1,6 @@
 rootProject.name = "Otus_Home_Works"
 include("hw01-gradle")
+include("hw04-generics")
 
 pluginManagement {
     val jgitver: String by settings
@@ -24,3 +25,4 @@ pluginManagement {
         id("org.projectlombok.lombok") version lombok
     }
 }
+
