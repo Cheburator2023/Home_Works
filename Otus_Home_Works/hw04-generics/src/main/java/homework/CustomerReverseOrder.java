@@ -1,28 +1,28 @@
 package homework;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class CustomerReverseOrder {
 
-    private List<Customer> customers = new ArrayList<>();
+    private Deque<Customer> customers = new ArrayDeque<>();
 
     public CustomerReverseOrder() {
     }
 
-    public List<Customer> getCustomers() {
+    public Deque<Customer> getCustomers() {
         return customers;
     }
 
-    public void setCustomers(List<Customer> customers) {
+    public void setCustomers(Deque<Customer> customers) {
         this.customers = customers;
     }
 
     // todo: 2. надо реализовать методы этого класса
     // надо подобрать подходящую структуру данных, тогда решение будет в "две строчки"
 
-    public void add(Customer customer1) {
-        customers.add(customer1);
+    public void add(Customer customer) {
+        customers.addLast(customer);
     }
 
     public Customer take() {
