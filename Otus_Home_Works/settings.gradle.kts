@@ -25,4 +25,4 @@ pluginManagement {
         id("org.projectlombok.lombok") version lombok
     }
 }
-
+include("hw08-gc")
