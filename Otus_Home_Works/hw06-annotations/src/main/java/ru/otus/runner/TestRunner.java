@@ -2,7 +2,7 @@ package ru.otus.runner;
 
 import lombok.Data;
 import lombok.SneakyThrows;
-import result.Result;
+import ru.otus.result.Result;
 import ru.otus.annotations.After;
 import ru.otus.annotations.Before;
 import ru.otus.annotations.Test;
@@ -19,7 +19,7 @@ public class TestRunner {
     }
 
     private void invokeClass(Class<?> clazz) {
-        var testClass = TestClass.set(clazz);
+        var testClass = new TestClass(clazz);
 
 
 

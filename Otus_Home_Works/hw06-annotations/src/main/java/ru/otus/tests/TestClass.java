@@ -1,7 +1,5 @@
 package ru.otus.tests;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
@@ -10,18 +8,20 @@ import ru.otus.annotations.Before;
 import ru.otus.annotations.Test;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor(staticName = "set")
 public class TestClass {
 
     private final Logger logger = LoggerFactory.getLogger(TestClass.class);
     private Object instance;
     private final Class<?> clazz;
+
+    public TestClass(Class<?> clazz) {
+        this.clazz = clazz;
+    }
 
     @SneakyThrows
     public Map<String, String> invokeMethods(Class<? extends Annotation> annotation) {
@@ -63,14 +63,8 @@ public class TestClass {
     @SneakyThrows
     public Object instance(Object... args) {
         if (instance == null) {
-            instance = getConstructor().newInstance(args);
+            instance = clazz.getConstructor().newInstance(args);
         }
         return instance;
-    }
-
-    @NonNull
-    @SneakyThrows
-    private Constructor<?> getConstructor() {
-        return clazz.getConstructor();
     }
 }

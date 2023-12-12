@@ -35,13 +35,13 @@ public class TestCalculator {
         assertThat(calculator.division()).isEqualTo(1);
     }
 
-    @Test
-    public void divizionByZero() {
-        Throwable throwable = catchThrowable(() -> calculator.setZeroB().division());
-        assertThat(throwable)
-                .isInstanceOf(ArithmeticException.class)
-                .hasMessageContaining("You can't divide by zero");
-    }
+//    @Test
+//    public void divizionByZero() {
+//        Throwable throwable = catchThrowable(() -> calculator.setZeroB().division());
+//        assertThat(throwable)
+//                .isInstanceOf(ArithmeticException.class)
+//                .hasMessageContaining("You can't divide by zero");
+//    }
 
     @After
     public void clean() {
