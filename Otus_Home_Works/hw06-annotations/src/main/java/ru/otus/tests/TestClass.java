@@ -26,36 +26,45 @@ public class TestClass {
     @SneakyThrows
     public Map<String, String> invokeMethods(Class<? extends Annotation> annotation) {
         Map<String, String> map = new HashMap<>();
+        Method beforeMethod = null;
+        Method afterMethod = null;
+
         for (Method m : clazz.getDeclaredMethods()) {
-            if (m.isAnnotationPresent(annotation)) {
-                if (annotation.equals(Test.class)) {
-                    if (!map.containsKey("Tests")) {
-                        map.put("Tests", String.valueOf(1));
-                        logger.info(() -> "map put");
-                    } else {
-                        map.replace("Tests", String.valueOf(Integer.parseInt(map.get("Tests")) + 1));
-                    }
-                    try {
-                        m.invoke(instance());
-                        if (!map.containsKey("Passed")) {
-                            map.put("Passed", String.valueOf(1));
-                        } else {
-                            map.replace("Passed", String.valueOf(Integer.parseInt(map.get("Passed")) + 1));
-                        }
-                    } catch (InvocationTargetException wrappedExc) {
-                        Throwable exc = wrappedExc.getCause();
-                        if (!map.containsKey("Failed " + m)) {
-                            map.put("Failed" + m, m + " failed " + exc);
-                        } else {
-                            map.replace("Failed", m + " failed " + exc);
-                        }
-                        System.out.println(m + " failed: " + exc);
-                    }
-                } else if (annotation.equals(Before.class) || annotation.equals(After.class)) {
+            if (m.isAnnotationPresent(Before.class)) {
+                beforeMethod = m;
+            } else if (m.isAnnotationPresent(After.class)) {
+                afterMethod = m;
+            } else if (m.isAnnotationPresent(Test.class)) {
+                if (beforeMethod != null) {
+                    beforeMethod.invoke(instance());
+                }
+
+                try {
                     m.invoke(instance());
+
+                    if (!map.containsKey("Passed")) {
+                        map.put("Passed", String.valueOf(1));
+                    } else {
+                        map.replace("Passed", String.valueOf(Integer.parseInt(map.get("Passed")) + 1));
+                    }
+                } catch (InvocationTargetException wrappedExc) {
+                    Throwable exc = wrappedExc.getCause();
+                    System.out.println(m + " failed: " + exc);
+                }
+
+                if (afterMethod != null) {
+                    afterMethod.invoke(instance());
+                }
+
+                if (!map.containsKey("Tests")) {
+                    map.put("Tests", String.valueOf(1));
+                    logger.info(() -> "map put");
+                } else {
+                    map.replace("Tests", String.valueOf(Integer.parseInt(map.get("Tests")) + 1));
                 }
             }
         }
+
         return map;
     }
 

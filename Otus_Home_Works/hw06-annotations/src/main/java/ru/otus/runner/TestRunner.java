@@ -13,19 +13,9 @@ public class TestRunner {
 
     @SneakyThrows
     public void runTest() {
-        Class<?> testClass = Class.forName("ru.otus.tests.CalculatorTest");
-        invokeClass(testClass);
-
-    }
-
-    private void invokeClass(Class<?> clazz) {
-        var testClass = new TestClass(clazz);
-
-
-
-        testClass.invokeMethods(Before.class);
-        Result result = new Result();
+        Class<?> calculatorTestClass = Class.forName("ru.otus.tests.CalculatorTest");
+        var testClass = new TestClass(calculatorTestClass);
+        var result = new Result();
         result.results(testClass.invokeMethods(Test.class));
-        testClass.invokeMethods(After.class);
     }
 }
