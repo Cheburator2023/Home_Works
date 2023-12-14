@@ -3,8 +3,6 @@ package ru.otus.runner;
 import lombok.Data;
 import lombok.SneakyThrows;
 import ru.otus.result.Result;
-import ru.otus.annotations.After;
-import ru.otus.annotations.Before;
 import ru.otus.annotations.Test;
 import ru.otus.tests.TestClass;
 

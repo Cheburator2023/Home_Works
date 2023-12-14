@@ -5,7 +5,6 @@ import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 import ru.otus.annotations.After;
 import ru.otus.annotations.Before;
-import ru.otus.annotations.Test;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -29,18 +28,23 @@ public class TestClass {
         Method beforeMethod = null;
         Method afterMethod = null;
 
-        for (Method m : clazz.getDeclaredMethods()) {
-            if (m.isAnnotationPresent(Before.class)) {
-                beforeMethod = m;
-            } else if (m.isAnnotationPresent(After.class)) {
-                afterMethod = m;
-            } else if (m.isAnnotationPresent(Test.class)) {
-                if (beforeMethod != null) {
-                    beforeMethod.invoke(instance());
-                }
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Before.class)) {
+                beforeMethod = method;
+            } else if (method.isAnnotationPresent(After.class)) {
+                afterMethod = method;
+            } else if (method.isAnnotationPresent(annotation)) {
 
                 try {
-                    m.invoke(instance());
+                    if (beforeMethod != null) {
+                        beforeMethod.invoke(instance());
+                    }
+
+                    method.invoke(instance());
+
+                    if (afterMethod != null) {
+                        afterMethod.invoke(instance());
+                    }
 
                     if (!map.containsKey("Passed")) {
                         map.put("Passed", String.valueOf(1));
@@ -49,11 +53,7 @@ public class TestClass {
                     }
                 } catch (InvocationTargetException wrappedExc) {
                     Throwable exc = wrappedExc.getCause();
-                    System.out.println(m + " failed: " + exc);
-                }
-
-                if (afterMethod != null) {
-                    afterMethod.invoke(instance());
+                    System.out.println(method + " failed: " + exc);
                 }
 
                 if (!map.containsKey("Tests")) {
