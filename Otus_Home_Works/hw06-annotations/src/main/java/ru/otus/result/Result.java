@@ -9,7 +9,7 @@ import java.util.Optional;
 public class Result {
 
     @FunctionalInterface
-    interface I {
+    interface PrintResult {
         String generate();
         default void print(String value) {
             System.out.printf(Optional.ofNullable(value).orElseGet(this::generate));
@@ -25,6 +25,6 @@ public class Result {
                 .orElse(0);
         String s = String.format("Tests : %d\nPassed: %d\nFailed: %d\n",
                 tests, passed, tests - passed);
-        ((I)()-> "Тесты отсутствуют").print(s);
+        ((PrintResult)()-> "Тесты отсутствуют").print(s);
     }
 }
