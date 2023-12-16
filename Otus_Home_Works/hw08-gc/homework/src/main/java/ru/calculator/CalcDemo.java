@@ -10,6 +10,7 @@ package ru.calculator;
 */
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @SuppressWarnings("java:S106")
 public class CalcDemo {
@@ -23,7 +24,9 @@ public class CalcDemo {
             summator.calc(data);
 
             if (idx % 10_000_000 == 0) {
-                System.out.println(LocalDateTime.now() + " current idx:" + idx);
+                System.out.println(LocalDateTime.now()
+                        .format(DateTimeFormatter
+                                .ofPattern("yyyy-MM-dd hh:mm:ss")) + " current idx:" + idx);
             }
         }
 

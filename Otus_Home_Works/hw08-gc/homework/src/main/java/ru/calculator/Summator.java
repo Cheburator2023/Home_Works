@@ -1,7 +1,7 @@
 package ru.calculator;
 
-import java.util.ArrayList;
-import java.util.List;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 
 public class Summator {
     private Integer sum = 0;
@@ -9,11 +9,11 @@ public class Summator {
     private Integer prevPrevValue = 0;
     private Integer sumLastThreeValues = 0;
     private Integer someValue = 0;
-    private final List<Data> listValues = new ArrayList<>();
+    private final TIntList listValues = new TIntArrayList(10_000_001);
 
     // !!! сигнатуру метода менять нельзя
     public void calc(Data data) {
-        listValues.add(data);
+        listValues.add(data.getValue());
         if (listValues.size() % 6_600_000 == 0) {
             listValues.clear();
         }

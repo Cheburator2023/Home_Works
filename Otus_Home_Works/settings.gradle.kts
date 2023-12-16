@@ -1,6 +1,7 @@
 rootProject.name = "Otus_Home_Works"
 include("hw01-gradle")
 include("hw04-generics")
+include("hw08-gc")
 
 pluginManagement {
     val jgitver: String by settings
@@ -25,4 +26,3 @@ pluginManagement {
         id("org.projectlombok.lombok") version lombok
     }
 }
-include("hw08-gc")
