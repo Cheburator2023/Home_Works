@@ -9,12 +9,12 @@ public class Summator {
     private Integer prevPrevValue = 0;
     private Integer sumLastThreeValues = 0;
     private Integer someValue = 0;
-    private final TIntList listValues = new TIntArrayList(10_000_001);
+    private final TIntList listValues = new TIntArrayList(10_001);
 
     // !!! сигнатуру метода менять нельзя
     public void calc(Data data) {
         listValues.add(data.getValue());
-        if (listValues.size() % 6_600_000 == 0) {
+        if (listValues.size() % 1_000 == 0) {
             listValues.clear();
         }
         sum += data.getValue();

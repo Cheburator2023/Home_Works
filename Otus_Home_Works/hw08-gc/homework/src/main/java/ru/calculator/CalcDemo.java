@@ -24,9 +24,12 @@ public class CalcDemo {
             summator.calc(data);
 
             if (idx % 10_000_000 == 0) {
-                System.out.println(LocalDateTime.now()
+                StringBuilder stringBuilder = new StringBuilder(LocalDateTime.now()
                         .format(DateTimeFormatter
-                                .ofPattern("yyyy-MM-dd hh:mm:ss")) + " current idx:" + idx);
+                                .ofPattern("yyyy-MM-dd hh:mm:ss")));
+                stringBuilder.append(" current idx:");
+                stringBuilder.append(idx);
+                System.out.println(stringBuilder);
             }
         }
 
@@ -36,6 +39,10 @@ public class CalcDemo {
         System.out.println(summator.getSumLastThreeValues());
         System.out.println(summator.getSomeValue());
         System.out.println(summator.getSum());
-        System.out.println("spend msec:" + delta + ", sec:" + (delta / 1000));
+        StringBuilder str = new StringBuilder("spend msec:");
+        str.append(delta);
+        str.append(", sec:");
+        str.append((delta / 1000));
+        System.out.println(str);
     }
 }
