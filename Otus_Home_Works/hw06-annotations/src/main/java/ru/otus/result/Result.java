@@ -11,6 +11,7 @@ public class Result {
     @FunctionalInterface
     interface PrintResult {
         String generate();
+
         default void print(String value) {
             System.out.printf(Optional.ofNullable(value).orElseGet(this::generate));
         }
@@ -25,6 +26,6 @@ public class Result {
                 .orElse(0);
         String s = String.format("Tests : %d\nPassed: %d\nFailed: %d\n",
                 tests, passed, tests - passed);
-        ((PrintResult)()-> "Тесты отсутствуют").print(s);
+        ((PrintResult) () -> "Тесты отсутствуют").print(s);
     }
 }

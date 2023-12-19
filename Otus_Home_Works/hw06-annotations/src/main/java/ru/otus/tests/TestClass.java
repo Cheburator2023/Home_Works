@@ -13,7 +13,6 @@ import java.util.Map;
 
 public class TestClass {
 
-    private Object instance;
     private final Class<?> clazz;
 
     public TestClass(Class<?> clazz) {
@@ -25,13 +24,14 @@ public class TestClass {
         Map<String, String> map = new HashMap<>();
 
         for (Method method : clazz.getDeclaredMethods()) {
-             if (method.isAnnotationPresent(Test.class)) {
+            if (method.isAnnotationPresent(Test.class)) {
+                Object instance = instance();
                 try {
-                    methodInvokeBeforeAndAfter(Before.class);
+                    methodInvokeBefore(instance);
 
-                    method.invoke(instance());
+                    method.invoke(instance);
 
-                    methodInvokeBeforeAndAfter(After.class);
+                    methodInvokeAfter(instance);
                     if (!map.containsKey("Passed")) {
                         map.put("Passed", String.valueOf(1));
                     } else {
@@ -39,7 +39,7 @@ public class TestClass {
                     }
                 } catch (InvocationTargetException wrappedExc) {
                     Throwable exc = wrappedExc.getCause();
-                    System.out.println(method + " failed: " + exc);
+                    System.out.println(method.getName() + " failed: " + exc);
                 }
                 if (!map.containsKey("Tests")) {
                     map.put("Tests", String.valueOf(1));
@@ -53,11 +53,25 @@ public class TestClass {
     }
 
     @SneakyThrows
-    private void methodInvokeBeforeAndAfter(Class<? extends Annotation> annotation) {
+    private void methodInvokeBefore(Object instance) {
         for (Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(annotation)) {
+            if (method.isAnnotationPresent(Before.class)) {
                 try {
-                    method.invoke(instance());
+                    method.invoke(instance);
+                } catch (InvocationTargetException wrappedExc) {
+                    Throwable exc = wrappedExc.getCause();
+                    System.out.println(method.getName() + " failed: " + exc);
+                }
+            }
+        }
+    }
+
+    @SneakyThrows
+    private void methodInvokeAfter(Object instance) {
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(After.class)) {
+                try {
+                    method.invoke(instance);
                 } catch (InvocationTargetException wrappedExc) {
                     Throwable exc = wrappedExc.getCause();
                     System.out.println(method.getName() + " failed: " + exc);
@@ -68,10 +82,7 @@ public class TestClass {
 
 
     @SneakyThrows
-    public Object instance(Object... args) {
-        if (instance == null) {
-            instance = clazz.getConstructor().newInstance(args);
-        }
-        return instance;
+    public Object instance() {
+        return clazz.getConstructor().newInstance();
     }
 }

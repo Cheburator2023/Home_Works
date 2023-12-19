@@ -43,7 +43,7 @@ public class CalculatorTest {
         Throwable throwable = catchThrowable(() -> calculator.setZeroB().division());
         AssertionsForClassTypes.assertThat(throwable)
                 .isInstanceOf(ArithmeticException.class)
-                .hasMessageContaining("You can't divide by zero");
+                .hasMessageContaining("You can't divide by zero").doesNotThrowAnyException();
     }
 
     @After
