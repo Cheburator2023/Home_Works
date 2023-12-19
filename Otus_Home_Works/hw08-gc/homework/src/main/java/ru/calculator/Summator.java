@@ -13,19 +13,19 @@ public class Summator {
 
     // !!! сигнатуру метода менять нельзя
     public void calc(Data data) {
-        listValues.add(data.getValue());
+        listValues.add(data.value());
         if (listValues.size() % 1_000 == 0) {
             listValues.clear();
         }
-        sum += data.getValue();
+        sum += data.value();
 
-        sumLastThreeValues = data.getValue() + prevValue + prevPrevValue;
+        sumLastThreeValues = data.value() + prevValue + prevPrevValue;
 
         prevPrevValue = prevValue;
-        prevValue = data.getValue();
+        prevValue = data.value();
 
         for (var idx = 0; idx < 3; idx++) {
-            someValue += (sumLastThreeValues * sumLastThreeValues / (data.getValue() + 1) - sum);
+            someValue += (sumLastThreeValues * sumLastThreeValues / (data.value() + 1) - sum);
             someValue = Math.abs(someValue) + listValues.size();
         }
     }
