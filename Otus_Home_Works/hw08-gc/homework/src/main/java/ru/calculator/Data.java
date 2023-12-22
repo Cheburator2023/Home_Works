@@ -1,4 +1,4 @@
 package ru.calculator;
 
-public record Data(Integer value) {
+public record Data(int value) {
 }
