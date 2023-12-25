@@ -1,6 +1,7 @@
 rootProject.name = "Otus_Home_Works"
 include("hw01-gradle")
 include("hw04-generics")
+include("hw06-annotations")
 include("hw08-gc")
 
 pluginManagement {
@@ -13,6 +14,8 @@ pluginManagement {
     val sonarlint: String by settings
     val spotless: String by settings
     val lombok: String by settings
+    val assertj: String by settings
+
 
     plugins {
         id("fr.brouillard.oss.gradle.jgitver") version jgitver
@@ -24,5 +27,6 @@ pluginManagement {
         id("name.remal.sonarlint") version sonarlint
         id("com.diffplug.spotless") version spotless
         id("org.projectlombok.lombok") version lombok
+        id("org.assertj-core") version assertj
     }
 }
