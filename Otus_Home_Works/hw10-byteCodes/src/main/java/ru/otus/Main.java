@@ -1,7 +1,12 @@
 package ru.otus;
 
+import ru.otus.demo.Demo;
+import ru.otus.test.Ioc;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        var testlogging = Ioc.createTestLogging();
+        var demo = new Demo(testlogging);
+        demo.action();
     }
 }
