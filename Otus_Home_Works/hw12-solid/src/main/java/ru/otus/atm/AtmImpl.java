@@ -1,5 +1,7 @@
 package ru.otus.atm;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.otus.banknotes.Banknotes;
 import ru.otus.exception.NoCashException;
 
@@ -8,35 +10,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static ru.otus.balance.Balance.balance;
 
 public class AtmImpl implements Atm {
 
     private final Map<Banknotes, Integer> innerCash;
 
-    public AtmImpl(Map<Banknotes, Integer> innerCash) {
+    @Setter
+    @Getter
+    private int balance;
+
+
+    public AtmImpl(Map<Banknotes, Integer> innerCash, int balance) {
         this.innerCash = innerCash;
+        this.balance = balance;
     }
 
     @Override
     public void getBanknoutes(List<Banknotes> banknotes) {
         int recivedcash = 0;
         for (Banknotes banknote : banknotes) {
-            if (banknote.equals(Banknotes.RUBLES100)) {
-                innerCash.put(banknote, (innerCash.get(banknote) + 1));
-                recivedcash += 100;
-            } else if (banknote.equals(Banknotes.RUBLES500)) {
-                innerCash.put(banknote, (innerCash.get(banknote) + 1));
-                recivedcash += 500;
-            } else if (banknote.equals(Banknotes.RUBLES1000)) {
-                innerCash.put(banknote, (innerCash.get(banknote) + 1));
-                recivedcash += 1000;
-            } else if (banknote.equals(Banknotes.RUBLES5000)) {
-                innerCash.put(banknote, (innerCash.get(banknote) + 1));
-                recivedcash += 5000;
-            } else {
-                System.out.println("This is not money");
-            }
+            innerCash.put(banknote, (innerCash.get(banknote) + 1));
+            recivedcash += getNominal(banknote);
         }
         System.out.printf("Получены купюры: %s\n", banknotes);
         System.out.printf("Зачислено на счет: %d\n", balance += recivedcash);
@@ -87,10 +81,14 @@ public class AtmImpl implements Atm {
     }
 
     @Override
-    public void getAccountBalance() {
+    public void showAccountBalance() {
         Integer balanceValue = Optional.of(balance)
                 .orElseGet(() -> 0);
         System.out.printf("Остаток на счете: %d\n", balanceValue);
     }
 
+    private int getNominal(Banknotes banknotes) {
+        String string = banknotes.toString();
+        return Integer.parseInt(string.substring(6));
+    }
 }

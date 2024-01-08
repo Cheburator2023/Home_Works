@@ -1,6 +1,5 @@
 package ru.otus;
 
-import ru.otus.atm.Atm;
 import ru.otus.atm.AtmImpl;
 import ru.otus.banknotes.Banknotes;
 
@@ -9,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ru.otus.balance.Balance.balance;
 
 public class Main {
     public static void main(String[] args) {
+        int balance = 0;
         List<Banknotes> banknotesRecivedClient = new ArrayList<>();
         banknotesRecivedClient.add(Banknotes.RUBLES100);
         banknotesRecivedClient.add(Banknotes.RUBLES500);
@@ -27,12 +26,12 @@ public class Main {
 
         int giveOutCash = 5800;
 
-        Atm atm = new AtmImpl(banknotesInAtm);
+        AtmImpl atm = new AtmImpl(banknotesInAtm, balance);
         atm.getBanknoutes(banknotesRecivedClient);
         atm.giveBanknotes(giveOutCash);
-        atm.getAccountBalance();
-        balance +=1000000;
-        atm.getAccountBalance();
-        atm.giveBanknotes(balance);
+        atm.showAccountBalance();
+        atm.setBalance(1000000);
+        atm.showAccountBalance();
+        atm.giveBanknotes(atm.getBalance());
     }
 }
