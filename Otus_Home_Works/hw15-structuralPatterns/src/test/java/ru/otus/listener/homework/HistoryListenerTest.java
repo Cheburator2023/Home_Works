@@ -11,7 +11,6 @@ import ru.otus.model.ObjectForMessage;
 class HistoryListenerTest {
 
     @Test
-    @Disabled("удалить для запуска тест")
     void listenerTest() {
         // given
         var historyListener = new HistoryListener();
