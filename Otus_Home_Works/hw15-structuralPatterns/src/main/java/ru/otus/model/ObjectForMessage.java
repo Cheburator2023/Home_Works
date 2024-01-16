@@ -1,7 +1,10 @@
 package ru.otus.model;
 
+import lombok.ToString;
+
 import java.util.List;
 
+@ToString
 public class ObjectForMessage {
     private List<String> data;
 
