@@ -8,23 +8,14 @@ import ru.otus.model.Message;
 
 public class HistoryListener implements Listener, HistoryReader {
 
-    private Map<Long, Message> messageMap = new HashMap<>(150);
+    private final Map<Long, Message> history = new HashMap<>();
 
-    @Override
-    public void onUpdated(Message msg) {
-        if (!messageMap.containsKey(msg.getId())) {
-            messageMap.put(msg.getId(), msg);
-        } else {
-            if (!messageMap.containsKey(msg.getId())) {
-                messageMap.put((msg.getId() +1L), msg);
-            } else {
-                throw new RuntimeException("Map is full");
-            }
-        }
+    public void onUpdated(Message message) {
+        Message copy = message.clone();
+        history.put(copy.getId(), copy);
     }
 
-    @Override
     public Optional<Message> findMessageById(long id) {
-        return Optional.ofNullable(messageMap.get(id));
+        return Optional.ofNullable(history.get(id)).map(Message::clone);
     }
 }

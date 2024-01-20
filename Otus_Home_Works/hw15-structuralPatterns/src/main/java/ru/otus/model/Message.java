@@ -1,7 +1,7 @@
 package ru.otus.model;
 
 @SuppressWarnings({"java:S107", "java:S1135"})
-public class Message {
+public class Message implements Cloneable {
     private final long id;
     private final String field1;
     private final String field2;
@@ -15,7 +15,7 @@ public class Message {
     private final String field10;
     private final String field11;
     private final String field12;
-    private final ObjectForMessage field13;
+    private ObjectForMessage field13;
 
     // todo: 1. Добавить поля field11 - field13 (для field13 используйте класс ObjectForMessage)
 
@@ -171,6 +171,17 @@ public class Message {
                 ", field12='" + field12 + '\'' +
                 ", field13=" + field13 +
                 '}';
+    }
+
+    @Override
+    public Message clone() {
+        try {
+            Message clonedMessage = (Message) super.clone();
+            clonedMessage.field13 = this.field13.clone(); // Clone the ObjectForMessage field
+            return clonedMessage;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
     public static class Builder {

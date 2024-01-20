@@ -45,6 +45,18 @@ public class HomeWork {
 
         var firstResult = complexProcessor.handle(firstMessage);
         System.out.println("Result:" + firstResult);
+
+        var secondMessage = new Message.Builder(2L)
+                .field11("field11")
+                .field12("field12")
+                .field13(field13)
+                .build();
+
+        var secondResult = complexProcessor.handle(secondMessage);
+        System.out.println("Result:" + secondResult);
+
+        complexProcessor.removeListener(listenerPrinter);
+
         /*
           по аналогии с Demo.class
           из элеменов "to do" создать new ComplexProcessor и обработать сообщение
