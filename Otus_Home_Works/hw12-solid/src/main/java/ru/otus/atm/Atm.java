@@ -10,5 +10,5 @@ public interface Atm {
 
     List<Banknotes> giveBanknotes(int giveOutCash);
 
-    void showAccountBalance();
+    int getAccountBalance();
 }

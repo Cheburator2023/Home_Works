@@ -37,36 +37,22 @@ public class AtmImpl implements Atm {
 
     }
 
+    public int getSumCashInAtm() {
+        int atmCash = 0;
+        for (Banknotes banknote : innerCash.keySet()) {
+            atmCash += getNominal(banknote) * innerCash.get(banknote);
+        }
+        System.out.printf("Сумма наличности: %d\n", atmCash);
+        return atmCash;
+    }
+
+
     @Override
     public List<Banknotes> giveBanknotes(int giveOutCash) {
         List<Banknotes> banknotesList = new ArrayList<>();
         try {
             if (balance >= giveOutCash) {
-                int countOf5000 = giveOutCash / 5000;
-                for (int i = 0; i < countOf5000; i++) {
-                    if (innerCash.get(Banknotes.RUBLES5000) >= countOf5000) {
-                        banknotesList.add(Banknotes.RUBLES5000);
-                        innerCash.put(Banknotes.RUBLES5000, (innerCash.get(Banknotes.RUBLES5000) - 1));
-                    } else {
-                        throw new NoCashException("Not enough cash");
-                    }
-                }
-                int countOf1000 = (giveOutCash - 5000 * countOf5000) / 1000;
-                for (int i = 0; i < countOf1000; i++) {
-                    banknotesList.add(Banknotes.RUBLES1000);
-                    innerCash.put(Banknotes.RUBLES1000, (innerCash.get(Banknotes.RUBLES1000) - 1));
-                }
-                int countOf500 = ((giveOutCash - 5000 * countOf5000) - 1000 * countOf1000) / 500;
-                for (int i = 0; i < countOf500; i++) {
-                    banknotesList.add(Banknotes.RUBLES500);
-                    innerCash.put(Banknotes.RUBLES500, (innerCash.get(Banknotes.RUBLES500) - 1));
-                }
-                int countOf100 =
-                        (((giveOutCash - 5000 * countOf5000) - 1000 * countOf1000) - 500 * countOf500) / 100;
-                for (int i = 0; i < countOf100; i++) {
-                    banknotesList.add(Banknotes.RUBLES100);
-                    innerCash.put(Banknotes.RUBLES100, (innerCash.get(Banknotes.RUBLES100) - 1));
-                }
+                giveBanknotesRecursive(giveOutCash, banknotesList);
                 balance -= giveOutCash;
                 System.out.printf("Выданы купюры: %s\n", banknotesList);
                 System.out.printf("Списано со счёта: %d\n", giveOutCash);
@@ -80,11 +66,40 @@ public class AtmImpl implements Atm {
         return banknotesList;
     }
 
+    private void giveBanknotesRecursive(int remainingCash, List<Banknotes> banknotesList) {
+        if (remainingCash == 0) {
+            return;
+        }
+
+        Banknotes maxNominal = getMaxNominalAvailable(remainingCash);
+        if (maxNominal != null) {
+            banknotesList.add(maxNominal);
+            innerCash.put(maxNominal, innerCash.get(maxNominal) - 1);
+            giveBanknotesRecursive(remainingCash - getNominal(maxNominal), banknotesList);
+        } else {
+            throw new NoCashException("Not enough cash");
+        }
+    }
+
+    private Banknotes getMaxNominalAvailable(int remainingCash) {
+        Banknotes maxNominal = null;
+        int maxNominalValue = 0;
+        for (Banknotes banknote : innerCash.keySet()) {
+            int nominal = getNominal(banknote);
+            if (nominal <= remainingCash && nominal > maxNominalValue && innerCash.get(banknote) > 0) {
+                maxNominal = banknote;
+                maxNominalValue = nominal;
+            }
+        }
+        return maxNominal;
+    }
+
     @Override
-    public void showAccountBalance() {
+    public int getAccountBalance() {
         Integer balanceValue = Optional.of(balance)
                 .orElseGet(() -> 0);
         System.out.printf("Остаток на счете: %d\n", balanceValue);
+        return balanceValue;
     }
 
     private int getNominal(Banknotes banknotes) {

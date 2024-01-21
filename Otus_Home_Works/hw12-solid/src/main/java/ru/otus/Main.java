@@ -19,19 +19,22 @@ public class Main {
         banknotesRecivedClient.add(Banknotes.RUBLES5000);
 
         Map<Banknotes, Integer> banknotesInAtm = new HashMap<>();
-        banknotesInAtm.put(Banknotes.RUBLES100, 100);
-        banknotesInAtm.put(Banknotes.RUBLES500, 20);
-        banknotesInAtm.put(Banknotes.RUBLES1000, 10);
-        banknotesInAtm.put(Banknotes.RUBLES5000, 10);
+        banknotesInAtm.put(Banknotes.RUBLES100, 1000);
+        banknotesInAtm.put(Banknotes.RUBLES500, 1000);
+        banknotesInAtm.put(Banknotes.RUBLES1000, 500);
+        banknotesInAtm.put(Banknotes.RUBLES5000, 300);
 
         int giveOutCash = 5800;
 
         AtmImpl atm = new AtmImpl(banknotesInAtm, balance);
+        atm.getSumCashInAtm();
         atm.getBanknoutes(banknotesRecivedClient);
         atm.giveBanknotes(giveOutCash);
-        atm.showAccountBalance();
-        atm.setBalance(1000000);
-        atm.showAccountBalance();
+        atm.getAccountBalance();
+        atm.setBalance(1023400);
+        atm.getSumCashInAtm();
+        System.out.printf("Остаток на счёте: %d\n", atm.getAccountBalance());
         atm.giveBanknotes(atm.getBalance());
+        atm.getSumCashInAtm();
     }
 }
