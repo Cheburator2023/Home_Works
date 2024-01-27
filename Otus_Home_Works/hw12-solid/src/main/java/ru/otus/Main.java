@@ -34,7 +34,8 @@ public class Main {
         atm.setBalance(1023400);
         atm.getSumCashInAtm();
         System.out.printf("Остаток на счёте: %d\n", atm.getAccountBalance());
-        atm.giveBanknotes(atm.getBalance());
+        atm.giveBanknotes(atm.getAccountBalance());
+        atm.getAccountBalance();
         atm.getSumCashInAtm();
     }
 }

@@ -16,7 +16,6 @@ public class AtmImpl implements Atm {
     private final Map<Banknotes, Integer> innerCash;
 
     @Setter
-    @Getter
     private int balance;
 
 
