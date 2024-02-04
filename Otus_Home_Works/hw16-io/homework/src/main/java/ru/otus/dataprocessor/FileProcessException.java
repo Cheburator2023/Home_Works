@@ -5,7 +5,7 @@ public class FileProcessException extends RuntimeException {
         super(ex);
     }
 
-    public FileProcessException(String msg) {
-        super(msg);
+    public FileProcessException(String msg, Throwable cause) {
+        super(msg, cause);
     }
 }
