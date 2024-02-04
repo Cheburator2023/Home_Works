@@ -6,6 +6,10 @@ import ru.otus.model.Measurement;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class ProcessorAggregator implements Processor {
@@ -16,11 +20,12 @@ public class ProcessorAggregator implements Processor {
     public Map<String, Double> process(List<Measurement> data) {
         Map<String, Double> aggregatedData = new TreeMap<>();
 
-        try {
-            Gson gson = new Gson();
-            String jsonData = gson.toJson(data);
+        Gson gson = new Gson();
+        String jsonData = gson.toJson(data);
 
-            List<Measurement> measurements = gson.fromJson(jsonData, new TypeToken<List<Measurement>>() {
+        try (var reader =
+                     new InputStreamReader(new ByteArrayInputStream(jsonData.getBytes()), StandardCharsets.UTF_8)) {
+            List<Measurement> measurements = gson.fromJson(reader, new TypeToken<List<Measurement>>() {
             }.getType());
 
             for (Measurement measurement : measurements) {
@@ -29,7 +34,7 @@ public class ProcessorAggregator implements Processor {
 
                 aggregatedData.merge(name, value, Double::sum);
             }
-        } catch (FileProcessException e) {
+        } catch (FileProcessException | IOException e) {
             logger.error("Ошибка при обработке данных: {}", e.getMessage());
             return Collections.emptyMap();
         }
