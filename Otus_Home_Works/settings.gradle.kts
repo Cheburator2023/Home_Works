@@ -6,7 +6,7 @@ include("hw08-gc")
 include("hw10-byteCodes")
 include("hw12-solid")
 include("hw15-structuralPatterns")
-
+include("hw16-io:homework")
 
 pluginManagement {
     val jgitver: String by settings
@@ -19,6 +19,7 @@ pluginManagement {
     val spotless: String by settings
     val lombok: String by settings
     val assertj: String by settings
+    val gson: String by settings
 
 
     plugins {
@@ -32,5 +33,6 @@ pluginManagement {
         id("com.diffplug.spotless") version spotless
         id("org.projectlombok.lombok") version lombok
         id("org.assertj-core") version assertj
+        id("com.google.code.gson") version gson
     }
 }
