@@ -21,7 +21,9 @@ pluginManagement {
     val spotless: String by settings
     val lombok: String by settings
     val assertj: String by settings
-
+    val hikariCP: String by settings
+    val flyway: String by settings
+    val postgresql: String by settings
 
     plugins {
         id("fr.brouillard.oss.gradle.jgitver") version jgitver
@@ -34,5 +36,8 @@ pluginManagement {
         id("com.diffplug.spotless") version spotless
         id("org.projectlombok.lombok") version lombok
         id("org.assertj-core") version assertj
+        id("com.zaxxer.HikariCP") version hikariCP
+        id("org.flywaydb.flyway-core") version flyway
+        id("org.postgresql.postgresql") version postgresql
     }
 }

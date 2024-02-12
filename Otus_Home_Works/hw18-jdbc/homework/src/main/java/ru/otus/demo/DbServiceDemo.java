@@ -1,6 +1,5 @@
 package ru.otus.demo;
 
-import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +9,8 @@ import ru.otus.crm.datasource.DriverManagerDataSource;
 import ru.otus.crm.model.Client;
 import ru.otus.crm.repository.ClientDataTemplateJdbc;
 import ru.otus.crm.service.DbServiceClientImpl;
+
+import javax.sql.DataSource;
 
 public class DbServiceDemo {
     private static final String URL = "jdbc:postgresql://localhost:5430/demoDB";

@@ -1,8 +1,8 @@
 dependencies {
     implementation("ch.qos.logback:logback-classic")
     implementation("org.flywaydb:flyway-core")
-    implementation("com.zaxxer:HikariCP")
     implementation("org.postgresql:postgresql")
+    implementation("com.zaxxer:HikariCP")
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
@@ -11,5 +11,7 @@ dependencies {
 
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.projectlombok:lombok")
+    compileOnly ("org.projectlombok:lombok")
+    annotationProcessor ("org.projectlombok:lombok")
 }
-
