@@ -2,6 +2,7 @@ package ru.otus.crm.datasource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
@@ -26,24 +27,28 @@ public class DriverManagerDataSource implements DataSource {
         throw new UnsupportedOperationException();
     }
 
+    @SneakyThrows
     @Override
     public PrintWriter getLogWriter() {
-        throw new UnsupportedOperationException();
+        return dataSourcePool.getLogWriter();
     }
 
+    @SneakyThrows
     @Override
     public void setLogWriter(PrintWriter out) {
-        throw new UnsupportedOperationException();
+        dataSourcePool.setLogWriter(out);
     }
 
+    @SneakyThrows
     @Override
     public int getLoginTimeout() {
-        throw new UnsupportedOperationException();
+        return dataSourcePool.getLoginTimeout();
     }
 
+    @SneakyThrows
     @Override
     public void setLoginTimeout(int seconds) {
-        throw new UnsupportedOperationException();
+        dataSourcePool.setLoginTimeout(seconds);
     }
 
     @Override
@@ -51,14 +56,16 @@ public class DriverManagerDataSource implements DataSource {
         throw new UnsupportedOperationException();
     }
 
+    @SneakyThrows
     @Override
     public <T> T unwrap(Class<T> iface) {
-        throw new UnsupportedOperationException();
+        return dataSourcePool.unwrap(iface);
     }
 
+    @SneakyThrows
     @Override
     public boolean isWrapperFor(Class<?> iface) {
-        throw new UnsupportedOperationException();
+        return dataSourcePool.isWrapperFor(iface);
     }
 
     private void createConnectionPool(String url, String user, String pwd) {

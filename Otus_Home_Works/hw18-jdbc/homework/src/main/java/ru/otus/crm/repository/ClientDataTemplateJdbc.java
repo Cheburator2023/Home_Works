@@ -1,5 +1,6 @@
 package ru.otus.crm.repository;
 
+import lombok.SneakyThrows;
 import ru.otus.core.repository.DataTemplate;
 import ru.otus.core.repository.DataTemplateException;
 import ru.otus.core.repository.executor.DbExecutor;
@@ -20,6 +21,7 @@ public class ClientDataTemplateJdbc implements DataTemplate<Client> {
         this.dbExecutor = dbExecutor;
     }
 
+    @SneakyThrows
     @Override
     public Optional<Client> findById(Connection connection, long id) {
         return dbExecutor.executeSelect(connection, "select id, name from client where id  = ?", List.of(id), rs -> {
@@ -34,6 +36,7 @@ public class ClientDataTemplateJdbc implements DataTemplate<Client> {
         });
     }
 
+    @SneakyThrows
     @Override
     public List<Client> findAll(Connection connection) {
         return dbExecutor
