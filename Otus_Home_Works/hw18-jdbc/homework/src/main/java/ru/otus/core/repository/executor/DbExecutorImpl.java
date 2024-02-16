@@ -24,7 +24,7 @@ public class DbExecutorImpl implements DbExecutor {
                 return rs.getInt(1);
             }
         } catch (SQLException ex) {
-            throw new DataBaseOperationException("executeInsert error", ex);
+            throw new DataBaseOperationException("executeStatement error", ex);
         }
     }
 
@@ -36,10 +36,12 @@ public class DbExecutorImpl implements DbExecutor {
                 pst.setObject(idx + 1, params.get(idx));
             }
             try (var rs = pst.executeQuery()) {
-                return Optional.ofNullable(rsHandler.apply(rs));
+                if (rs.next())
+                    return Optional.ofNullable(rsHandler.apply(rs));
             }
         } catch (SQLException ex) {
             throw new DataBaseOperationException("executeSelect error", ex);
         }
+        return Optional.empty();
     }
 }
