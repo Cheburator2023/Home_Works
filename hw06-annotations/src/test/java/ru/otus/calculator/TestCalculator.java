@@ -6,7 +6,7 @@ import ru.otus.annotations.Test;
 import ru.otus.calculator.Calculator;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
-
+@SuppressWarnings("java:S5838")
 public class TestCalculator {
     private Calculator calculator;
 

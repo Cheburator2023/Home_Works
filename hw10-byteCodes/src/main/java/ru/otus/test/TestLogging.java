@@ -2,6 +2,7 @@ package ru.otus.test;
 
 import ru.otus.annotations.Log;
 
+@SuppressWarnings("java:S106")
 public class TestLogging implements TestLoggingInterface {
 
     @Log

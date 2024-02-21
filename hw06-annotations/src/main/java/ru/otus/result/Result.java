@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.Map;
 import java.util.Optional;
 
+@SuppressWarnings({"java:S106","java:S3457"})
 @Data
 public class Result {
 

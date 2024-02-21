@@ -3,6 +3,7 @@ package homework;
 import java.util.Map;
 import java.util.TreeMap;
 
+@SuppressWarnings({"java:S2864","java:S1186","java:S1319","java:S1135"})
 public class CustomerService {
 
     private final TreeMap<Customer, String> customerStringMap = new TreeMap<>();
@@ -18,8 +19,6 @@ public class CustomerService {
     public CustomerService() {
     }
 
-    // todo: 3. надо реализовать методы этого класса
-    // важно подобрать подходящую Map-у, посмотрите на редко используемые методы, они тут полезны
 
     public Map.Entry<Customer, String> getSmallest() throws CloneNotSupportedException {
         return getCustomerStringMap().firstEntry();
