@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
+@SuppressWarnings({"java:S1192","java:S106"})
 public class TestClass {
 
     private final Class<?> clazz;

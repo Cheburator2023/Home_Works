@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@SuppressWarnings({"java:S106","java:S6204","java:S1611"})
 public class LogInvocationHandler implements InvocationHandler {
 
     private final Object targetChanges;

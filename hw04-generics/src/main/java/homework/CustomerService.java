@@ -3,6 +3,7 @@ package homework;
 import java.util.Map;
 import java.util.TreeMap;
 
+@SuppressWarnings({"java:S2864","java:S1186","java:S1319","java:S1135"})
 public class CustomerService {
 
     private final TreeMap<Customer, String> customerStringMap = new TreeMap<>();

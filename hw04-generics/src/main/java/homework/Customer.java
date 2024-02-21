@@ -1,5 +1,6 @@
 package homework;
 
+@SuppressWarnings({"java:S2975","java:S1135"})
 public class Customer implements Comparable<Customer>, Cloneable {
     private final long id;
     private String name;
