@@ -1,6 +1,6 @@
 package ru.otus.model;
 
-@SuppressWarnings({"java:S107", "java:S1135"})
+
 public class Message implements Cloneable {
     private final long id;
     private final String field1;
@@ -17,7 +17,6 @@ public class Message implements Cloneable {
     private final String field12;
     private ObjectForMessage field13;
 
-    // todo: 1. Добавить поля field11 - field13 (для field13 используйте класс ObjectForMessage)
 
     private Message(
             long id,
