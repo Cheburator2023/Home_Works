@@ -8,6 +8,7 @@ include("hw12-solid")
 include("hw15-structuralPatterns")
 include("hw16-io")
 include("hw18-jdbc")
+include("hw21-cache")
 
 pluginManagement {
     val jgitver: String by settings
