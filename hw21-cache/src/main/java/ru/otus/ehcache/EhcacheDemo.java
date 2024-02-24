@@ -19,8 +19,8 @@ public class EhcacheDemo {
     private Cache<Integer, Long> cache;
 
     public static void main(String[] args) {
-        new EhcacheDemo().withoutCache();
-        // new EhcacheDemo().withCache();
+        //new EhcacheDemo().withoutCache();
+        new EhcacheDemo().withCache();
     }
 
     // без кеширования
