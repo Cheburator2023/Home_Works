@@ -10,9 +10,15 @@ import java.util.List;
 
 public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
     private final Class<T> clazz;
+    private final Field idField;
+    private final List<Field> allFields;
+    private final List<Field> fieldsWithoutId;
 
     public EntityClassMetaDataImpl(Class<T> clazz) {
         this.clazz = clazz;
+        this.idField = findIdField();
+        this.allFields = findAllFields();
+        this.fieldsWithoutId = findFieldsWithoutId();
     }
 
     @Override
@@ -31,6 +37,20 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
 
     @Override
     public Field getIdField() {
+        return idField;
+    }
+
+    @Override
+    public List<Field> getAllFields() {
+        return allFields;
+    }
+
+    @Override
+    public List<Field> getFieldsWithoutId() {
+        return fieldsWithoutId;
+    }
+
+    private Field findIdField() {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             if (field.isAnnotationPresent(Id.class)) {
@@ -40,13 +60,11 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
         throw new RuntimeException("Id field not found for class: " + clazz.getSimpleName());
     }
 
-    @Override
-    public List<Field> getAllFields() {
+    private List<Field> findAllFields() {
         return new ArrayList<>(Arrays.asList(clazz.getDeclaredFields()));
     }
 
-    @Override
-    public List<Field> getFieldsWithoutId() {
+    private List<Field> findFieldsWithoutId() {
         List<Field> fieldsWithoutId = new ArrayList<>();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {

@@ -2,12 +2,13 @@ package ru.otus.crm.datasource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.SneakyThrows;
+import ru.otus.core.sessionmanager.DataBaseOperationException;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
 public class DriverManagerDataSource implements DataSource {
@@ -19,53 +20,75 @@ public class DriverManagerDataSource implements DataSource {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return dataSourcePool.getConnection();
+        try {
+            return dataSourcePool.getConnection();
+        } catch (SQLException e) {
+            throw new DataBaseOperationException("Failed to get connection from data source", e);
+        }
     }
 
     @Override
-    public Connection getConnection(String username, String password) {
+    public Connection getConnection(String username, String password) throws SQLException {
         throw new UnsupportedOperationException();
     }
 
-    @SneakyThrows
     @Override
-    public PrintWriter getLogWriter() {
-        return dataSourcePool.getLogWriter();
-    }
-
-    @SneakyThrows
-    @Override
-    public void setLogWriter(PrintWriter out) {
-        dataSourcePool.setLogWriter(out);
-    }
-
-    @SneakyThrows
-    @Override
-    public int getLoginTimeout() {
-        return dataSourcePool.getLoginTimeout();
-    }
-
-    @SneakyThrows
-    @Override
-    public void setLoginTimeout(int seconds) {
-        dataSourcePool.setLoginTimeout(seconds);
+    public PrintWriter getLogWriter() throws SQLException {
+        try {
+            return dataSourcePool.getLogWriter();
+        } catch (SQLException e) {
+            throw new DataBaseOperationException("Failed to get log writer from data source", e);
+        }
     }
 
     @Override
-    public Logger getParentLogger() {
+    public void setLogWriter(PrintWriter out) throws SQLException {
+        try {
+            dataSourcePool.setLogWriter(out);
+        } catch (SQLException e) {
+            throw new DataBaseOperationException("Failed to set log writer for data source", e);
+        }
+    }
+
+    @Override
+    public int getLoginTimeout() throws SQLException {
+        try {
+            return dataSourcePool.getLoginTimeout();
+        } catch (SQLException e) {
+            throw new DataBaseOperationException("Failed to get login timeout from data source", e);
+        }
+    }
+
+    @Override
+    public void setLoginTimeout(int seconds) throws SQLException {
+        try {
+            dataSourcePool.setLoginTimeout(seconds);
+        } catch (SQLException e) {
+            throw new DataBaseOperationException("Failed to set login timeout for data source", e);
+        }
+    }
+
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
         throw new UnsupportedOperationException();
     }
 
-    @SneakyThrows
     @Override
-    public <T> T unwrap(Class<T> iface) {
-        return dataSourcePool.unwrap(iface);
+    public <T> T unwrap(Class<T> iface) throws SQLException {
+        try {
+            return dataSourcePool.unwrap(iface);
+        } catch (SQLException e) {
+            throw new DataBaseOperationException("Failed to unwrap data source", e);
+        }
     }
 
-    @SneakyThrows
     @Override
-    public boolean isWrapperFor(Class<?> iface) {
-        return dataSourcePool.isWrapperFor(iface);
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        try {
+            return dataSourcePool.isWrapperFor(iface);
+        } catch (SQLException e) {
+            throw new DataBaseOperationException("Failed to check if data source is wrapper for " + iface.getName(), e);
+        }
     }
 
     private void createConnectionPool(String url, String user, String pwd) {
