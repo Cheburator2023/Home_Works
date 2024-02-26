@@ -8,6 +8,7 @@ include("hw12-solid")
 include("hw15-structuralPatterns")
 include("hw16-io")
 include("hw18-jdbc")
+include("hw21-cache")
 
 pluginManagement {
     val jgitver: String by settings
@@ -24,6 +25,7 @@ pluginManagement {
     val flyway: String by settings
     val postgresql: String by settings
     val gson: String by settings
+    val encache: String by settings
 
     plugins {
         id("fr.brouillard.oss.gradle.jgitver") version jgitver
@@ -40,5 +42,6 @@ pluginManagement {
         id("org.flywaydb.flyway-core") version flyway
         id("org.postgresql.postgresql") version postgresql
         id("com.google.code.gson") version gson
+        id("org.ehcache") version encache
     }
 }
