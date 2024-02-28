@@ -9,6 +9,7 @@ include("hw15-structuralPatterns")
 include("hw16-io")
 include("hw18-jdbc")
 include("hw21-cache")
+include("hw22-jpql")
 
 pluginManagement {
     val jgitver: String by settings
@@ -45,3 +46,4 @@ pluginManagement {
         id("org.ehcache") version encache
     }
 }
+include("hw22-jpql")
