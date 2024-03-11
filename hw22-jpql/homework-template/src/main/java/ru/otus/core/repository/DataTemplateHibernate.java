@@ -36,12 +36,24 @@ public class DataTemplateHibernate<T> implements DataTemplate<T> {
 
     @Override
     public T insert(Session session, T object) {
-        session.persist(object);
-        return object;
+        try {
+            session.persist(object);
+            return object;
+        } catch (Exception e) {
+            throw new RuntimeException("Error while inserting object", e);
+        }
     }
 
     @Override
     public T update(Session session, T object) {
-        return session.merge(object);
+        if (object == null) {
+            throw new IllegalArgumentException("Object to update cannot be null");
+        }
+
+        try {
+            return session.merge(object);
+        } catch (Exception e) {
+            throw new RuntimeException("Error while updating object", e);
+        }
     }
 }

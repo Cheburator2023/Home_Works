@@ -1,16 +1,14 @@
 package ru.otus.crm.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Getter
 @Setter
@@ -28,6 +26,15 @@ public class Client implements Cloneable {
     @Column(name = "name")
     private String name;
 
+    @OneToOne(cascade = CascadeType.ALL,targetEntity = Address.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    @Fetch(FetchMode.JOIN)
+    private Address address;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client",fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    private List<Phone> phones = new ArrayList<>();
+
     public Client(String name) {
         this.id = null;
         this.name = name;
@@ -38,18 +45,55 @@ public class Client implements Cloneable {
         this.name = name;
     }
 
+    public Client(String name, Address address, List<Phone> phones) {
+        this.name = name;
+        this.address = address;
+        this.phones = phones;
+    }
+
     public <E> Client(Long id, String name, Address address, List<Phone> phones) {
-        throw new UnsupportedOperationException();
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phones = phones;
     }
 
     @Override
     @SuppressWarnings({"java:S2975", "java:S1182"})
     public Client clone() {
-        return new Client(this.id, this.name);
+        List<Phone> clonedPhones = new ArrayList<>();
+        if (this.phones != null) {
+            for (Phone phone : this.phones) {
+                clonedPhones.add(phone.clone());
+            }
+        }
+        if (this.address != null) {
+            return new Client(this.id, this.name, this.address.clone(), clonedPhones);
+        }
+        return new Client(this.id, this.name, this.address, clonedPhones);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client client)) return false;
+
+        if (!getId().equals(client.getId())) return false;
+        return getName().equals(client.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
-        return "Client{" + "id=" + id + ", name='" + name + '\'' + '}';
+        return "Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
