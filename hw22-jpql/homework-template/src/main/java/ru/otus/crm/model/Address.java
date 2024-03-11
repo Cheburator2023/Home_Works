@@ -40,11 +40,7 @@ public class Address implements Cloneable {
     @Override
     public Address clone() {
         try {
-            Address clonedAddress = (Address) super.clone();
-            if (this.client != null) {
-                clonedAddress.client = this.client.clone();
-            }
-            return clonedAddress;
+            return (Address) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("Cloning failed for Address", e);
         }

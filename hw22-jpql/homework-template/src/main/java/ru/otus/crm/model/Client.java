@@ -1,14 +1,16 @@
 package ru.otus.crm.model;
 
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Objects.nonNull;
 
 @Getter
 @Setter
@@ -56,6 +58,12 @@ public class Client implements Cloneable {
         this.name = name;
         this.address = address;
         this.phones = phones;
+        if (nonNull(address)) {
+            address.setClient(this);
+        }
+        if (nonNull(phones)) {
+            phones.forEach(p -> p.setClient(this));
+        }
     }
 
     @Override
