@@ -47,3 +47,5 @@ pluginManagement {
     }
 }
 include("hw22-jpql")
+include("hw22-jpql:homework-template")
+findProject(":hw22-jpql:homework-template")?.name = "homework-template"
