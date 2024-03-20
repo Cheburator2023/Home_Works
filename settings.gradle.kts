@@ -10,6 +10,9 @@ include("hw16-io")
 include("hw18-jdbc")
 include("hw21-cache")
 include("hw22-jpql")
+include("hw22-jpql:homework-template")
+findProject(":hw22-jpql:homework-template")?.name = "homework-template"
+include("hw24-webServer")
 
 pluginManagement {
     val jgitver: String by settings
@@ -46,6 +49,4 @@ pluginManagement {
         id("org.ehcache") version encache
     }
 }
-include("hw22-jpql")
-include("hw22-jpql:homework-template")
-findProject(":hw22-jpql:homework-template")?.name = "homework-template"
+
