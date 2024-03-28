@@ -1,15 +1,25 @@
-package server;
+package ru.otus.server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.otus.core.repository.DataTemplateHibernate;
+import ru.otus.core.repository.HibernateUtils;
+import ru.otus.core.sessionmanager.TransactionManagerHibernate;
+import ru.otus.crm.dbmigrations.MigrationsExecutorFlyway;
+import ru.otus.crm.model.Address;
+import ru.otus.crm.model.Client;
+import ru.otus.crm.model.Phone;
+import ru.otus.crm.service.DBServiceClient;
+import ru.otus.crm.service.DbServiceClientImpl;
 import ru.otus.dao.UserDao;
 import ru.otus.model.User;
-import ru.otus.server.UsersWebServer;
-import ru.otus.server.UsersWebServerSimple;
+import ru.otus.UsersWebServer;
+import ru.otus.UsersWebServerSimple;
 import ru.otus.services.TemplateProcessor;
 
 import java.net.HttpURLConnection;
@@ -35,9 +45,13 @@ class UsersWebServerImplTest {
 
     private static final User DEFAULT_USER = new User(DEFAULT_USER_ID, "Vasya", "user1", "11111");
 
+    public static final String HIBERNATE_CFG_FILE = "hibernate.cfg.xml";
+
     private static Gson gson;
     private static UsersWebServer webServer;
     private static HttpClient http;
+
+    private static DBServiceClient dbServiceClient;
 
     @BeforeAll
     static void setUp() throws Exception {
@@ -49,7 +63,22 @@ class UsersWebServerImplTest {
         given(userDao.findById(DEFAULT_USER_ID)).willReturn(Optional.of(DEFAULT_USER));
 
         gson = new GsonBuilder().serializeNulls().create();
-        webServer = new UsersWebServerSimple(WEB_SERVER_PORT, userDao, gson, templateProcessor);
+        var configuration = new Configuration().configure(HIBERNATE_CFG_FILE);
+
+        var dbUrl = configuration.getProperty("hibernate.connection.url");
+        var dbUserName = configuration.getProperty("hibernate.connection.username");
+        var dbPassword = configuration.getProperty("hibernate.connection.password");
+
+        new MigrationsExecutorFlyway(dbUrl, dbUserName, dbPassword).executeMigrations();
+
+        var sessionFactory = HibernateUtils.buildSessionFactory(configuration, Client.class, Address.class, Phone.class);
+
+        var transactionManager = new TransactionManagerHibernate(sessionFactory);
+        var clientTemplate = new DataTemplateHibernate<>(Client.class);
+
+        var dbServiceClient = new DbServiceClientImpl(transactionManager, clientTemplate);
+
+        webServer = new UsersWebServerSimple(WEB_SERVER_PORT, userDao, dbServiceClient, gson, templateProcessor);
         webServer.start();
     }
 

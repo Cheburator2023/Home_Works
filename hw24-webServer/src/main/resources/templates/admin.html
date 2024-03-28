@@ -1,28 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
+    <title>Администратор</title>
+    <script>
+        function createClient() {
+            const nameInput = document.getElementById('createClientName');
+            const addressInput = document.getElementById('createClientAddress');
+            const phonesInput = document.getElementById('createClientPhones');
+            const clientData = {
+                name: nameInput.value,
+                address: { street: addressInput.value },
+                phones: phonesInput.value.split(',').map(phone => ({ number: phone.trim() }))
+            };
+            fetch('/api/client', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(clientData)
+            })
+                .then(response => response.json())
+                .then(createdClient => {
+                    console.log(createdClient);
+                    alert('Клиент создан');
+                    // Очистка формы после создания клиента
+                    nameInput.value = '';
+                    addressInput.value = '';
+                    phonesInput.value = '';
+                })
+                .catch(error => console.error('Ошибка создания клиента:', error));
+        }
+
+        function editClient() {
+            const clientIdInput = document.getElementById('editClientId');
+            const nameInput = document.getElementById('editClientName');
+            const addressInput = document.getElementById('editClientAddress');
+            const phonesInput = document.getElementById('editClientPhones');
+            const clientData = {
+                id: clientIdInput.value,
+                name: nameInput.value,
+                address: { street: addressInput.value },
+                phones: phonesInput.value.split(',').map(phone => ({ number: phone.trim() }))
+            };
+            fetch(`/api/client/${clientIdInput.value}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(clientData)
+            })
+                .then(response => response.json())
+                .then(updatedClient => {
+                    console.log(updatedClient);
+                    alert('Клиент обновлен');
+                })
+                .catch(error => console.error('Ошибка обновления клиента:', error));
+        }
+    </script>
 </head>
 <body>
-<h1>User Management</h1>
-<div>
-    <h2>Welcome, admin!</h2>
-    <p>You have the ability to create and edit users.</p>
-    <!-- User creation form -->
-    <form action="/createUser" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username">
-        <button type="submit">Create User</button>
-    </form>
-    <!-- User editing form -->
-    <form action="/editUser" method="post">
-        <label for="userId">User ID:</label>
-        <input type="text" id="userId" name="userId">
-        <button type="submit">Edit User</button>
-    </form>
-</div>
+<h4>Создать нового клиента</h4>
+<label for="createClientName">Имя:</label>
+<input type="text" id="createClientName" placeholder="Введите имя клиента">
+<label for="createClientAddress">Адрес:</label>
+<input type="text" id="createClientAddress" placeholder="Введите адрес">
+<label for="createClientPhones">Телефоны (через запятую):</label>
+<input type="text" id="createClientPhones" placeholder="Введите телефоны">
+<button onclick="createClient()">Создать клиента</button>
+
+<h2>Редактировать клиента</h2>
+<label for="editClientId">ID клиента:</label>
+<input type="text" id="editClientId" placeholder="Введите ID клиента" required>
+<label for="editClientName">Имя:</label>
+<input type="text" id="editClientName" placeholder="Введите имя клиента" required>
+<label for="editClientAddress">Адрес:</label>
+<input type="text" id="editClientAddress" placeholder="Введите адрес" required>
+<label for="editClientPhones">Телефоны (через запятую):</label>
+<input type="text" id="editClientPhones" placeholder="Введите телефоны">
+<button onclick="editClient()">Редактировать клиента</button>
 </body>
 </html>

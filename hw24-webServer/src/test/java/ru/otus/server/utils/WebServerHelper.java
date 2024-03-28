@@ -1,4 +1,4 @@
-package server.utils;
+package ru.otus.server.utils;
 
 import java.util.Arrays;
 import java.util.Optional;
