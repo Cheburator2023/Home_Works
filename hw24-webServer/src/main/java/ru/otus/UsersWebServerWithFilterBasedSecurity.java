@@ -9,6 +9,7 @@ import ru.otus.crm.service.DBServiceClient;
 import ru.otus.dao.UserDao;
 import ru.otus.services.TemplateProcessor;
 import ru.otus.services.UserAuthService;
+import ru.otus.servlet.AdminLoginServlet;
 import ru.otus.servlet.AuthorizationFilter;
 import ru.otus.servlet.LoginServlet;
 
@@ -26,6 +27,7 @@ public class UsersWebServerWithFilterBasedSecurity extends UsersWebServerSimple 
     @Override
     protected Handler applySecurity(ServletContextHandler servletContextHandler, String... paths) {
         servletContextHandler.addServlet(new ServletHolder(new LoginServlet(templateProcessor, authService)), "/login");
+        servletContextHandler.addServlet(new ServletHolder(new AdminLoginServlet(templateProcessor, authService)), "/admin/login");
         AuthorizationFilter authorizationFilter = new AuthorizationFilter();
         Arrays.stream(paths)
                 .forEachOrdered(

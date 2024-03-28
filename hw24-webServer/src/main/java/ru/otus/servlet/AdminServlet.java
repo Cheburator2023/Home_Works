@@ -4,11 +4,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import ru.otus.dao.UserDao;
+import ru.otus.crm.service.DBServiceClient;
 import ru.otus.services.TemplateProcessor;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {
@@ -17,23 +18,20 @@ public class AdminServlet extends HttpServlet {
 
     private final TemplateProcessor templateProcessor;
 
-    private final UserDao userDao;
+    private final DBServiceClient dbServiceClient;
 
-    public AdminServlet(TemplateProcessor templateProcessor, UserDao userDao) {
+    public AdminServlet(TemplateProcessor templateProcessor, DBServiceClient dbServiceClient) {
         this.templateProcessor = templateProcessor;
-        this.userDao = userDao;
+        this.dbServiceClient = dbServiceClient;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null) {
-            resp.sendRedirect("/adminLogin.html");
-            return;
-        }
+        Map<String, Object> params = new HashMap<>();
+        params.put("clients", dbServiceClient.findAll());
 
         resp.setContentType("text/html;charset=utf-8");
-        resp.getWriter().println(templateProcessor.getPage(ADMIN_PAGE_TEMPLATE, null));
+        resp.getWriter().println(templateProcessor.getPage(ADMIN_PAGE_TEMPLATE, params));
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

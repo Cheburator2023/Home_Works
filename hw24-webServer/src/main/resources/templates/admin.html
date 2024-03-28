@@ -3,15 +3,43 @@
 <head>
     <title>Администратор</title>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchClients();
+        });
+
+        function fetchClients() {
+            fetch('/api/client')
+                .then(response => response.json())
+                .then(clients => {
+                    const tbody = document.querySelector('table tbody');
+                    tbody.innerHTML = '';
+                    clients.forEach(client => {
+                        const tr = document.createElement('tr');
+                        const address = client.address ? client.address.street : 'Нет адреса';
+                        const phones = client.phones ? client.phones.map(phone => phone.number).join(', ') : 'Нет телефонов';
+                        tr.innerHTML = `
+                            <td>${client.id}</td>
+                            <td>${client.name}</td>
+                            <td>${address}</td>
+                            <td>${phones}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(error => console.error('Ошибка получения списка клиентов:', error));
+        }
+
         function createClient() {
             const nameInput = document.getElementById('createClientName');
             const addressInput = document.getElementById('createClientAddress');
             const phonesInput = document.getElementById('createClientPhones');
+
             const clientData = {
                 name: nameInput.value,
-                address: { street: addressInput.value },
-                phones: phonesInput.value.split(',').map(phone => ({ number: phone.trim() }))
+                address: addressInput.value ? { street: addressInput.value } : null,
+                phones: phonesInput.value ? phonesInput.value.split(',').map(phone => ({ number: phone.trim() })) : []
             };
+
             fetch('/api/client', {
                 method: 'POST',
                 headers: {
@@ -23,38 +51,12 @@
                 .then(createdClient => {
                     console.log(createdClient);
                     alert('Клиент создан');
-                    // Очистка формы после создания клиента
+                    fetchClients();
                     nameInput.value = '';
                     addressInput.value = '';
                     phonesInput.value = '';
                 })
                 .catch(error => console.error('Ошибка создания клиента:', error));
-        }
-
-        function editClient() {
-            const clientIdInput = document.getElementById('editClientId');
-            const nameInput = document.getElementById('editClientName');
-            const addressInput = document.getElementById('editClientAddress');
-            const phonesInput = document.getElementById('editClientPhones');
-            const clientData = {
-                id: clientIdInput.value,
-                name: nameInput.value,
-                address: { street: addressInput.value },
-                phones: phonesInput.value.split(',').map(phone => ({ number: phone.trim() }))
-            };
-            fetch(`/api/client/${clientIdInput.value}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(clientData)
-            })
-                .then(response => response.json())
-                .then(updatedClient => {
-                    console.log(updatedClient);
-                    alert('Клиент обновлен');
-                })
-                .catch(error => console.error('Ошибка обновления клиента:', error));
         }
     </script>
 </head>
@@ -68,15 +70,18 @@
 <input type="text" id="createClientPhones" placeholder="Введите телефоны">
 <button onclick="createClient()">Создать клиента</button>
 
-<h2>Редактировать клиента</h2>
-<label for="editClientId">ID клиента:</label>
-<input type="text" id="editClientId" placeholder="Введите ID клиента" required>
-<label for="editClientName">Имя:</label>
-<input type="text" id="editClientName" placeholder="Введите имя клиента" required>
-<label for="editClientAddress">Адрес:</label>
-<input type="text" id="editClientAddress" placeholder="Введите адрес" required>
-<label for="editClientPhones">Телефоны (через запятую):</label>
-<input type="text" id="editClientPhones" placeholder="Введите телефоны">
-<button onclick="editClient()">Редактировать клиента</button>
+<h2>Список клиентов</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Адрес</th>
+        <th>Телефоны</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
 </body>
 </html>
