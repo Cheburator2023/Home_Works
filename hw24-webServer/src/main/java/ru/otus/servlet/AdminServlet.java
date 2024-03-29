@@ -36,10 +36,7 @@ public class AdminServlet extends HttpServlet {
         } else {
             Map<String, Object> params = new HashMap<>();
             List<Client> clients = dbServiceClient.findAll();
-            if (!clients.isEmpty()) {
-                Client firstClient = clients.get(0);
-                params.put("client", firstClient);
-            }
+            params.put("clients", clients);
 
             resp.setContentType("text/html;charset=utf-8");
             resp.getWriter().println(templateProcessor.getPage(ADMIN_PAGE_TEMPLATE, params));
