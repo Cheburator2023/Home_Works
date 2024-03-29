@@ -1,5 +1,6 @@
 package ru.otus.crm.model;
 
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,20 +20,24 @@ import static java.util.Objects.nonNull;
 @Table(name = "client")
 public class Client implements Cloneable {
 
+    @Expose
     @Id
     @SequenceGenerator(name = "client_gen", sequenceName = "client_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "client_gen")
     @Column(name = "id")
     private Long id;
 
+    @Expose
     @Column(name = "name")
     private String name;
 
+    @Expose
     @OneToOne(cascade = CascadeType.ALL,targetEntity = Address.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     @Fetch(FetchMode.JOIN)
     private Address address;
 
+    @Expose
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client",fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     private List<Phone> phones = new ArrayList<>();

@@ -1,5 +1,6 @@
 package ru.otus.crm.model;
 
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,12 +15,15 @@ import org.hibernate.annotations.FetchMode;
 @Entity
 @Table(name = "address")
 public class Address implements Cloneable {
+
+    @Expose
     @Id
     @SequenceGenerator(name = "address_gen", sequenceName = "address_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_gen")
     @Column(name = "id")
     private Long id;
 
+    @Expose
     @Column(name = "street")
     private String street;
 

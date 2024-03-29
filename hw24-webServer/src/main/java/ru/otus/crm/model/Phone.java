@@ -1,5 +1,6 @@
 package ru.otus.crm.model;
 
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,12 +14,15 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @Table(name = "phone")
 public class Phone implements Cloneable {
+
+    @Expose
     @Id
     @SequenceGenerator(name = "phone_gen", sequenceName = "phone_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "phone_gen")
     @Column(name = "id")
     private Long id;
 
+    @Expose
     @Column(name = "number")
     private String number;
 

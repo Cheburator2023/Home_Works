@@ -2,6 +2,7 @@ package ru.otus.servlet;
 
 import com.google.gson.Gson;
 import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import ru.otus.model.User;
 import java.io.IOException;
 
 @SuppressWarnings({"squid:S1948"})
+@WebServlet("api/user/*")
 public class UsersApiServlet extends HttpServlet {
 
     private static final int ID_PATH_PARAM_POSITION = 1;

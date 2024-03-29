@@ -1,5 +1,6 @@
 package ru.otus.servlet;
 
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings({"squid:S1948"})
+@WebServlet("/users")
 public class UsersServlet extends HttpServlet {
 
     private static final String USERS_PAGE_TEMPLATE = "users.html";
