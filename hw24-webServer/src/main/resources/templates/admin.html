@@ -19,11 +19,13 @@
                     tbody.innerHTML = '';
                     clients.forEach(client => {
                         const tr = document.createElement('tr');
+                        const id = client.id ? client.id : 'Нет id';
+                        const name = client.name ? client.name : 'Нет имени';
                         const address = client.address ? client.address.street : 'Нет адреса';
                         const phones = client.phones ? client.phones.map(phone => phone.number).join(', ') : 'Нет телефонов';
                         tr.innerHTML = `
-                            <td>${client.id}</td>
-                            <td>${client.name}</td>
+                            <td>${id}</td>
+                            <td>${name}</td>
                             <td>${address}</td>
                             <td>${phones}</td>
                         `;

@@ -43,6 +43,7 @@ public class AdminLoginServlet extends HttpServlet {
 
         if (userAuthService.authenticate(login, password)) {
             HttpSession session = req.getSession();
+            session.setAttribute("user", login);
             session.setMaxInactiveInterval(MAX_INACTIVE_INTERVAL);
             resp.sendRedirect("/admin");
         } else {
