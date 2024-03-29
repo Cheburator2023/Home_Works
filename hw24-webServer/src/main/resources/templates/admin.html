@@ -7,32 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Администратор</title>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetchClients();
-        });
 
         function fetchClients() {
-            fetch('/api/client')
+            const clientIdTextBox = document.getElementById('clientIdTextBox');
+            const clientDataContainer = document.getElementById('clientDataContainer');
+            const id = clientIdTextBox.value;
+            fetch('/api/client/' + id)
                 .then(response => response.json())
-                .then(clients => {
-                    const tbody = document.querySelector('table tbody');
-                    tbody.innerHTML = '';
-                    clients.forEach(client => {
-                        const tr = document.createElement('tr');
-                        const id = client.id ? client.id : 'Нет id';
-                        const name = client.name ? client.name : 'Нет имени';
-                        const address = client.address ? client.address.street : 'Нет адреса';
-                        const phones = client.phones ? client.phones.map(phone => phone.number).join(', ') : 'Нет телефонов';
-                        tr.innerHTML = `
-                            <td>${id}</td>
-                            <td>${name}</td>
-                            <td>${address}</td>
-                            <td>${phones}</td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                })
-                .catch(error => console.error('Ошибка получения списка клиентов:', error));
+                .then(client => clientDataContainer.innerHTML = JSON.stringify(client));
         }
 
         function createClient() {
@@ -76,7 +58,7 @@
                 address: { street: addressInput.value },
                 phones: phonesInput.value.split(',').map(phone => ({ number: phone.trim() }))
             };
-            fetch(`/api/client/${clientIdInput.value}`, {
+            fetch(`/api/client/` + clientIdInput.value, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -113,18 +95,10 @@
 <input type="text" id="editClientPhones" placeholder="Введите телефоны">
 <button onclick="editClient()">Редактировать клиента</button>
 
-<h2>Список клиентов</h2>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Имя</th>
-        <th>Адрес</th>
-        <th>Телефоны</th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<h4>Получить клиента по id</h4>
+<input type="text" id = "clientIdTextBox" placeholder="Введите id пользователя" required>
+<button onclick="fetchClients()">Получить</button>
+<pre id = "clientDataContainer"></pre>
+
 </body>
 </html>
