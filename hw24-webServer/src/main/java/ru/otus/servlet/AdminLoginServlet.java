@@ -36,6 +36,7 @@ public class AdminLoginServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.getWriter().println(templateProcessor.getPage(LOGIN_PAGE_TEMPLATE, Collections.emptyMap()));
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter(PARAM_LOGIN);

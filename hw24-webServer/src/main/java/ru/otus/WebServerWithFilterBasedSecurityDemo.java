@@ -18,6 +18,8 @@ import ru.otus.services.TemplateProcessorImpl;
 import ru.otus.services.UserAuthService;
 import ru.otus.services.UserAuthServiceImpl;
 
+import java.util.List;
+
 /*
     Полезные для демо ссылки
 
@@ -56,6 +58,9 @@ public class WebServerWithFilterBasedSecurityDemo {
         var clientTemplate = new DataTemplateHibernate<>(Client.class);
 
         var dbServiceClient = new DbServiceClientImpl(transactionManager, clientTemplate);
+
+        dbServiceClient.saveClient(new Client("dbServiceFirst", new Address(null, "AnyStreet"), List.of(new Phone(null, "13-555-22"),
+                new Phone(null, "14-666-333"))));
 
         UsersWebServer usersWebServer = new UsersWebServerWithFilterBasedSecurity(
                 WEB_SERVER_PORT, authService, userDao, dbServiceClient, gson, templateProcessor);

@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ru.otus.crm.model.Client;
 import ru.otus.crm.service.DBServiceClient;
-import ru.otus.model.User;
 
 import java.io.IOException;
 
@@ -60,6 +59,27 @@ public class ClientApiServlet extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         ServletOutputStream out = response.getOutputStream();
         out.print(gson.toJson(client));
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String pathInfo = req.getPathInfo();
+        if (pathInfo == null || pathInfo.equals("/")) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        String[] pathParts = pathInfo.split("/");
+        if (pathParts.length != 2) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        try {
+            long clientId = Long.parseLong(pathParts[1]);
+            dbServiceClient.deleteClient(clientId);
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } catch (NumberFormatException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 
     private long extractIdFromRequest(HttpServletRequest request) {

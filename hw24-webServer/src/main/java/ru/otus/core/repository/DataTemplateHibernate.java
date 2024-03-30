@@ -57,4 +57,14 @@ public class DataTemplateHibernate<T> implements DataTemplate<T> {
             throw new RuntimeException("Error while updating object", e);
         }
     }
+
+    @Override
+    public void delete(Session session, long id) {
+        T entity = session.find(clazz, id);
+        if (entity != null) {
+            session.remove(entity);
+        } else {
+            throw new RuntimeException("Entity not found for id: " + id);
+        }
+    }
 }

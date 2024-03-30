@@ -11,10 +11,19 @@
         function fetchClients() {
             const clientIdTextBox = document.getElementById('clientIdTextBox');
             const clientDataContainer = document.getElementById('clientDataContainer');
+            const deleteClientButton = document.getElementById('deleteClientButton');
             const id = clientIdTextBox.value;
             fetch('/api/client/' + id)
                 .then(response => response.json())
-                .then(client => clientDataContainer.innerHTML = JSON.stringify(client));
+                .then(client => {
+                    if (client && client.id) {
+                        clientDataContainer.innerHTML = JSON.stringify(client);
+                        deleteClientButton.style.display = 'block';
+                    } else {
+                        clientDataContainer.innerHTML = 'Клиент не найден';
+                        deleteClientButton.style.display = 'none';
+                    }
+                });
         }
 
         function createClient() {
@@ -72,6 +81,28 @@
                 })
                 .catch(error => console.error('Ошибка обновления клиента:', error));
         }
+        function deleteClient() {
+            const clientIdTextBox = document.getElementById('clientIdTextBox');
+            const id = clientIdTextBox.value;
+            if (!id) {
+                alert('ID клиента не указан');
+                return;
+            }
+            fetch('/api/client/' + id, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Клиент удален');
+                        clientIdTextBox.value = '';
+                        document.getElementById('clientDataContainer').innerHTML = '';
+                        document.getElementById('deleteClientButton').style.display = 'none';
+                    } else {
+                        alert('Ошибка при удалении клиента');
+                    }
+                })
+                .catch(error => console.error('Ошибка удаления клиента:', error));
+        }
     </script>
 </head>
 <body>
@@ -99,6 +130,7 @@
 <input type="text" id = "clientIdTextBox" placeholder="Введите id пользователя" required>
 <button onclick="fetchClients()">Получить</button>
 <pre id = "clientDataContainer"></pre>
+<button id="deleteClientButton" style="display:none;" onclick="deleteClient()">Удалить клиента</button>
 
 <h2>Список клиентов</h2>
 <table>
@@ -112,7 +144,7 @@
     <tr>
         <td>${client.id}</td>
         <td>${client.name}</td>
-        <td>${(client.address.street)!"Неизвестно"}</td> <!-- Предполагается, что адрес - это объект с полем street -->
+        <td>${(client.address.street)!"Неизвестно"}</td>
         <td>
             <#list client.phones as phone>
             ${phone.number}<#if phone_has_next>, </#if>

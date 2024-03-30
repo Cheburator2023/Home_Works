@@ -15,4 +15,6 @@ public interface DataTemplate<T> {
     T insert(Session session, T object);
 
     T update(Session session, T object);
+
+    void delete(Session session, long id);
 }
