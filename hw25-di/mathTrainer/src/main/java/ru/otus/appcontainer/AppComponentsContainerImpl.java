@@ -1,18 +1,11 @@
 package ru.otus.appcontainer;
 
+import ru.otus.appcontainer.api.AppComponent;
 import ru.otus.appcontainer.api.AppComponentsContainer;
 import ru.otus.appcontainer.api.AppComponentsContainerConfig;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import ru.otus.appcontainer.api.AppComponent;
-import ru.otus.appcontainer.api.AppComponentsContainerConfig;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @SuppressWarnings("squid:S1068")
 public class AppComponentsContainerImpl implements AppComponentsContainer {
@@ -28,13 +21,11 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         checkConfigClass(configClass);
         Object configInstance = createConfigInstance(configClass);
 
-        // Получаем все методы, аннотированные @AppComponent, и сортируем их по order
         List<Method> componentMethods = Arrays.stream(configClass.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(AppComponent.class))
                 .sorted(Comparator.comparingInt(method -> method.getAnnotation(AppComponent.class).order()))
-                .collect(Collectors.toList());
+                .toList();
 
-        // Создаем и регистрируем компоненты
         for (Method method : componentMethods) {
             AppComponent appComponent = method.getAnnotation(AppComponent.class);
             Object component = createComponent(configInstance, method);

@@ -2,6 +2,7 @@ package ru.otus.services;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class IOServiceStreams implements IOService {
@@ -26,7 +27,15 @@ public class IOServiceStreams implements IOService {
 
     @Override
     public int readInt(String prompt) {
-        out(prompt);
-        return in.nextInt();
+        while (true) {
+            try {
+                out(prompt);
+                return in.nextInt();
+            } catch (InputMismatchException e) {
+                in.nextLine();
+                out.println("Введено некорректное значение. Пожалуйста, введите целое число.");
+            }
+        }
     }
 }
+
