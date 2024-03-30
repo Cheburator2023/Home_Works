@@ -13,6 +13,8 @@ import ru.otus.crm.model.Phone;
 import ru.otus.crm.service.DbServiceClientImpl;
 import ru.otus.dao.InMemoryUserDao;
 import ru.otus.dao.UserDao;
+import ru.otus.server.UsersWebServer;
+import ru.otus.server.UsersWebServerWithFilterBasedSecurity;
 import ru.otus.services.TemplateProcessor;
 import ru.otus.services.TemplateProcessorImpl;
 import ru.otus.services.UserAuthService;
@@ -31,6 +33,12 @@ import java.util.List;
 
     // REST сервис
     http://localhost:8080/api/user/3
+
+    // Страница админа
+    http://localhost:8080/admin
+
+    // REST сервис админа
+    http://localhost:8080/api/client/1
 */
 public class WebServerWithFilterBasedSecurityDemo {
     private static final int WEB_SERVER_PORT = 8080;

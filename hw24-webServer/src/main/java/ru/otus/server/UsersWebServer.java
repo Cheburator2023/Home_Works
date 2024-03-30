@@ -1,4 +1,4 @@
-package ru.otus;
+package ru.otus.server;
 
 @SuppressWarnings({"squid:S112"})
 public interface UsersWebServer {

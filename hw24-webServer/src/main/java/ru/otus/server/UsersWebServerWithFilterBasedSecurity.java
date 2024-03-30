@@ -1,4 +1,4 @@
-package ru.otus;
+package ru.otus.server;
 
 import com.google.gson.Gson;
 import org.eclipse.jetty.ee10.servlet.FilterHolder;

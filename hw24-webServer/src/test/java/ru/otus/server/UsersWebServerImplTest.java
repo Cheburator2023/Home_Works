@@ -18,8 +18,6 @@ import ru.otus.crm.service.DBServiceClient;
 import ru.otus.crm.service.DbServiceClientImpl;
 import ru.otus.dao.UserDao;
 import ru.otus.model.User;
-import ru.otus.UsersWebServer;
-import ru.otus.UsersWebServerSimple;
 import ru.otus.services.TemplateProcessor;
 
 import java.net.HttpURLConnection;
