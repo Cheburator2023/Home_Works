@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Просмотр клиента</title>
+</head>
+<body>
+<h2>Клиент</h2>
+<div>ID: <span th:text="${client.id}"></span></div>
+<div>Имя: <span th:text="${client.name}"></span></div>
+<a href="/clients">Назад к списку</a>
+</body>
+</html>

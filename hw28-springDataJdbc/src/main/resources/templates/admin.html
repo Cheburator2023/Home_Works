@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Администратор</title>
+</head>
+<body>
+<h2>Создать нового клиента</h2>
+<form th:action="@{/api/client}" th:method="post">
+    <label for="name">Имя:</label>
+    <input type="text" id="name" name="name" placeholder="Введите имя клиента" required>
+    <label for="street">Адрес:</label>
+    <input type="text" id="street" name="address.street" placeholder="Введите адрес">
+    <label for="phones">Телефоны (через запятую):</label>
+    <input type="text" id="phones" name="phones" placeholder="Введите телефоны">
+    <button type="submit">Создать клиента</button>
+</form>
+
+<h2>Редактировать клиента</h2>
+
+<h2>Список клиентов</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Адрес</th>
+        <th>Телефоны</th>
+    </tr>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.id}"></td>
+        <td th:text="${client.name}"></td>
+        <td th:text="${client.address != null ? client.address.street : 'Неизвестно'}"></td>
+        <td>
+            <span th:each="phone, iterStat : ${client.phones}">
+                <span th:text="${phone.number}"></span><span th:if="${!iterStat.last}">, </span>
+            </span>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

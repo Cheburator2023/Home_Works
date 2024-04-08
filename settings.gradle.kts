@@ -31,6 +31,7 @@ pluginManagement {
     val postgresql: String by settings
     val gson: String by settings
     val encache: String by settings
+    val thymeleaf: String by settings
 
     plugins {
         id("fr.brouillard.oss.gradle.jgitver") version jgitver
@@ -48,6 +49,7 @@ pluginManagement {
         id("org.postgresql.postgresql") version postgresql
         id("com.google.code.gson") version gson
         id("org.ehcache") version encache
+        id("org.thymeleaf") version thymeleaf
     }
 }
 

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактирование клиента</title>
+</head>
+<body>
+<h2>Клиент</h2>
+<form th:action="@{/clients}" th:method="post" th:object="${client}">
+    <input type="hidden" th:field="*{id}">
+    <div>
+        <label for="name">Имя:</label>
+        <input type="text" id="name" th:field="*{name}" required>
+    </div>
+    <div>
+        <button type="submit">Сохранить</button>
+    </div>
+</form>
+</body>
+</html>

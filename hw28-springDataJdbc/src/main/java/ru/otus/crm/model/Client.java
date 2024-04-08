@@ -23,10 +23,10 @@ public class Client {
     @Column("name")
     private String name;
 
-    @MappedCollection(idColumn = "client_id")
+    @MappedCollection(idColumn = "client_id", keyColumn = "client_id")
     private Address address;
 
-    @MappedCollection(idColumn = "client_id")
+    @MappedCollection(idColumn = "client_id", keyColumn = "client_id")
     private List<Phone> phones = new ArrayList<>();
 
     public Client(String name) {
