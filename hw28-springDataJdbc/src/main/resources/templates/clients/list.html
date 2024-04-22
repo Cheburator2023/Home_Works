@@ -9,11 +9,19 @@
   <tr>
     <th>ID</th>
     <th>Имя</th>
+    <th>Адрес</th>
+    <th>Телефоны</th>
     <th>Действия</th>
   </tr>
   <tr th:each="client : ${clients}">
     <td th:text="${client.id}"></td>
     <td th:text="${client.name}"></td>
+    <td th:text="${client.address.street}">Адрес</td>
+    <td>
+      <ul>
+        <li th:each="phone : ${client.phones}" th:text="${phone.number}">Номер телефона</li>
+      </ul>
+    </td>
     <td>
       <a th:href="@{/clients/{id}(id=${client.id})}">Просмотр</a>
       <a th:href="@{/clients/delete/{id}(id=${client.id})}">Удалить</a>

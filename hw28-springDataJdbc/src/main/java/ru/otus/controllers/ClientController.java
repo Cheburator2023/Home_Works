@@ -36,8 +36,15 @@ public class ClientController {
     @GetMapping("/{id:[\\d]+}")
     public String getClient(@PathVariable Long id, Model model) {
         try {
-            Optional<Client> client = clientService.getClient(id);
-            model.addAttribute("client", client.orElse(null));
+            Optional<Client> clientOpt = clientService.getClient(id);
+            if (clientOpt.isPresent()) {
+                Client client = clientOpt.get();
+                model.addAttribute("client", client);
+                // Предполагается, что адрес и телефоны уже включены в объект Client
+                // Если это не так, вам может потребоваться дополнительная логика для их извлечения
+            } else {
+                model.addAttribute("client", null);
+            }
             return "clients/view";
         } catch (Exception e) {
             logger.error("Error getting client with ID: " + id, e);
@@ -56,7 +63,7 @@ public class ClientController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/save")
     public String saveClient(@ModelAttribute Client client) {
         try {
             clientService.saveClient(client);

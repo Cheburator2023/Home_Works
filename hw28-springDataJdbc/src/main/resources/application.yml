@@ -11,8 +11,11 @@ spring:
 
 logging:
   level:
+    root: debug
+    ru.otus.service: DEBUG
     org:
       springframework:
-        jdbc.core.JdbcTemplate: TRACE
+        transaction: DEBUG
+        jdbc.core.JdbcTemplate: DEBUG
         web: DEBUG
       thymeleaf: DEBUG
