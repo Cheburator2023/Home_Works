@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Редактирование клиента</title>
+</head>
+<body>
+<h2>Клиент</h2>
+<form th:action="@{/clients/save}" th:method="post" th:object="${client}">
+    <input type="hidden" th:field="*{id}">
+    <div>
+        <label for="name">Имя:</label>
+        <input type="text" id="name" th:field="*{name}" required>
+    </div>
+    <div>
+        <label for="phone">Телефон:</label>
+        <input type="text" id="phone" th:field="*{phones[0].number}" required>
+    </div>
+    <div>
+        <label for="address">Адрес:</label>
+        <input type="text" id="address" th:field="*{address.street}" required>
+    </div>
+    <div>
+        <button type="submit">Сохранить</button>
+    </div>
+</form>
+</body>
+</html>

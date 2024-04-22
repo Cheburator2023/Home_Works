@@ -13,6 +13,7 @@ include("hw22-jpql")
 include("hw22-jpql:homework-template")
 findProject(":hw22-jpql:homework-template")?.name = "homework-template"
 include("hw24-webServer")
+include("hw28-springDataJdbc")
 include("hw25-di:mathTrainer")
 
 pluginManagement {
@@ -31,6 +32,7 @@ pluginManagement {
     val postgresql: String by settings
     val gson: String by settings
     val encache: String by settings
+    val thymeleaf: String by settings
 
     plugins {
         id("fr.brouillard.oss.gradle.jgitver") version jgitver
@@ -48,6 +50,7 @@ pluginManagement {
         id("org.postgresql.postgresql") version postgresql
         id("com.google.code.gson") version gson
         id("org.ehcache") version encache
+        id("org.thymeleaf") version thymeleaf
     }
 }
 
