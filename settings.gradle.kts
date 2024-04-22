@@ -14,6 +14,7 @@ include("hw22-jpql:homework-template")
 findProject(":hw22-jpql:homework-template")?.name = "homework-template"
 include("hw24-webServer")
 include("hw28-springDataJdbc")
+include("hw25-di:mathTrainer")
 
 pluginManagement {
     val jgitver: String by settings
