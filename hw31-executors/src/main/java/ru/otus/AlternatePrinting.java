@@ -24,6 +24,7 @@ public class AlternatePrinting {
                 while ((threadNumber == 1 && !threadOneTurn) || (threadNumber == 2 && threadOneTurn)) {
                     condition.await();
                 }
+                Thread.sleep(1000);
                 System.out.println(Thread.currentThread().getName() + ":" + i);
                 threadOneTurn = !threadOneTurn;
                 condition.signalAll();
@@ -34,12 +35,13 @@ public class AlternatePrinting {
             }
         }
 
-        for (int i = 10; i >= 1; i--) {
+        for (int i = 9; i >= 1; i--) {
             lock.lock();
             try {
                 while ((threadNumber == 1 && !threadOneTurn) || (threadNumber == 2 && threadOneTurn)) {
                     condition.await();
                 }
+                Thread.sleep(1000);
                 System.out.println(Thread.currentThread().getName() + ":" + i);
                 threadOneTurn = !threadOneTurn;
                 condition.signalAll();
