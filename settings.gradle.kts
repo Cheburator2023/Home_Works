@@ -53,4 +53,4 @@ pluginManagement {
         id("org.thymeleaf") version thymeleaf
     }
 }
-
+include("hw32-concurrentCollections")
