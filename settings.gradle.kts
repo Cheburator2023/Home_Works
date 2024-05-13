@@ -16,6 +16,8 @@ include("hw24-webServer")
 include("hw28-springDataJdbc")
 include("hw25-di:mathTrainer")
 include("hw31-executors")
+include("hw32-concurrentCollections")
+include("hw33-multiprocess")
 
 pluginManagement {
     val jgitver: String by settings
@@ -54,4 +56,4 @@ pluginManagement {
         id("org.thymeleaf") version thymeleaf
     }
 }
-include("hw32-concurrentCollections")
+
