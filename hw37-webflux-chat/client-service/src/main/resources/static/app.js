@@ -1,9 +1,7 @@
 let stompClient = null;
-
 const chatLineElementId = "chatLine";
 const roomIdElementId = "roomId";
 const messageElementId = "message";
-
 
 const setConnected = (connected) => {
     const connectBtn = document.getElementById("connect");
@@ -11,6 +9,7 @@ const setConnected = (connected) => {
 
     connectBtn.disabled = connected;
     disconnectBtn.disabled = !connected;
+
     const chatLine = document.getElementById(chatLineElementId);
     chatLine.hidden = !connected;
 }
@@ -26,6 +25,12 @@ const connect = () => {
         const topicNameUser = `/user/${userName}${topicName}`;
         stompClient.subscribe(topicName, (message) => showMessage(JSON.parse(message.body).messageStr));
         stompClient.subscribe(topicNameUser, (message) => showMessage(JSON.parse(message.body).messageStr));
+
+        if (roomId === "1408") {
+            fetch('/msg/all')
+                .then(response => response.json())
+                .then(messages => messages.forEach(msg => showMessage(msg.messageStr)));
+        }
     });
 }
 
@@ -39,8 +44,12 @@ const disconnect = () => {
 
 const sendMsg = () => {
     const roomId = document.getElementById(roomIdElementId).value;
+    if (roomId === "1408") {
+        alert("Messages cannot be sent to room 1408");
+        return;
+    }
     const message = document.getElementById(messageElementId).value;
-    stompClient.send(`/app/message.${roomId}`, {}, JSON.stringify({'messageStr': message}))
+    stompClient.send(`/app/message.${roomId}`, {}, JSON.stringify({'messageStr': message}));
 }
 
 const showMessage = (message) => {
@@ -50,3 +59,10 @@ const showMessage = (message) => {
     let newText = document.createTextNode(message);
     newCell.appendChild(newText);
 }
+
+// HTML Elements
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("connect").addEventListener("click", connect);
+    document.getElementById("disconnect").addEventListener("click", disconnect);
+    document.getElementById("send").addEventListener("click", sendMsg);
+});

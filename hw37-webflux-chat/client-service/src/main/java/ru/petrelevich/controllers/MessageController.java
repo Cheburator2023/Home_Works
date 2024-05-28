@@ -22,6 +22,7 @@ public class MessageController {
     private static final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
     private static final String TOPIC_TEMPLATE = "/topic/response.";
+    private static final String SPECIAL_ROOM_ID = "1408";
 
     private final WebClient datastoreClient;
     private final SimpMessagingTemplate template;
@@ -34,10 +35,19 @@ public class MessageController {
     @MessageMapping("/message.{roomId}")
     public void getMessage(@DestinationVariable String roomId, Message message) {
         logger.info("get message:{}, roomId:{}", message, roomId);
+
+        if (SPECIAL_ROOM_ID.equals(roomId)) {
+            logger.warn("Messages cannot be sent to room 1408");
+            return;
+        }
+
         saveMessage(roomId, message).subscribe(msgId -> logger.info("message send id:{}", msgId));
 
         template.convertAndSend(
                 String.format("%s%s", TOPIC_TEMPLATE, roomId), new Message(HtmlUtils.htmlEscape(message.messageStr())));
+
+        template.convertAndSend(
+                String.format("%s%s", TOPIC_TEMPLATE, SPECIAL_ROOM_ID), new Message(HtmlUtils.htmlEscape(message.messageStr())));
     }
 
     @EventListener
@@ -53,9 +63,6 @@ public class MessageController {
         }
         var roomId = parseRoomId(simpDestination);
         logger.info("subscription for:{}, roomId:{}", simpDestination, roomId);
-        /*
-        /user/3c3416b8-9b24-4c75-b38f-7c96953381d1/topic/response.1
-         */
 
         getMessagesByRoomId(roomId)
                 .doOnError(ex -> logger.error("getting messages for roomId:{} failed", roomId, ex))
@@ -82,16 +89,30 @@ public class MessageController {
     }
 
     private Flux<Message> getMessagesByRoomId(long roomId) {
-        return datastoreClient
-                .get()
-                .uri(String.format("/msg/%s", roomId))
-                .accept(MediaType.APPLICATION_NDJSON)
-                .exchangeToFlux(response -> {
-                    if (response.statusCode().equals(HttpStatus.OK)) {
-                        return response.bodyToFlux(Message.class);
-                    } else {
-                        return response.createException().flatMapMany(Mono::error);
-                    }
-                });
+        if (SPECIAL_ROOM_ID.equals(String.valueOf(roomId))) {
+            return datastoreClient
+                    .get()
+                    .uri("/msg/all")
+                    .accept(MediaType.APPLICATION_NDJSON)
+                    .exchangeToFlux(response -> {
+                        if (response.statusCode().equals(HttpStatus.OK)) {
+                            return response.bodyToFlux(Message.class);
+                        } else {
+                            return response.createException().flatMapMany(Mono::error);
+                        }
+                    });
+        } else {
+            return datastoreClient
+                    .get()
+                    .uri(String.format("/msg/%s", roomId))
+                    .accept(MediaType.APPLICATION_NDJSON)
+                    .exchangeToFlux(response -> {
+                        if (response.statusCode().equals(HttpStatus.OK)) {
+                            return response.bodyToFlux(Message.class);
+                        } else {
+                            return response.createException().flatMapMany(Mono::error);
+                        }
+                    });
+        }
     }
 }
