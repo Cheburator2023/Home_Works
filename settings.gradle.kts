@@ -18,6 +18,8 @@ include("hw25-di:mathTrainer")
 include("hw31-executors")
 include("hw32-concurrentCollections")
 include("hw33-multiprocess")
+include("project")
+include("project:AtmEmulator")
 
 pluginManagement {
     val jgitver: String by settings
