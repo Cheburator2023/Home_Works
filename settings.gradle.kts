@@ -38,6 +38,7 @@ pluginManagement {
     val gson: String by settings
     val encache: String by settings
     val thymeleaf: String by settings
+    val hibernate: String by settings
 
     plugins {
         id("fr.brouillard.oss.gradle.jgitver") version jgitver
@@ -56,6 +57,7 @@ pluginManagement {
         id("com.google.code.gson") version gson
         id("org.ehcache") version encache
         id("org.thymeleaf") version thymeleaf
+        id("org.hibernate.orm.hibernate-core") version hibernate
     }
 }
 
