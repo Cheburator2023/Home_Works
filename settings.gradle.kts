@@ -1,23 +1,44 @@
 rootProject.name = "Otus_Home_Works"
 include("hw01-gradle")
+
 include("hw04-generics")
+
 include("hw06-annotations")
+
 include("hw08-gc")
+
 include("hw10-byteCodes")
+
 include("hw12-solid")
+
 include("hw15-structuralPatterns")
+
 include("hw16-io")
+
 include("hw18-jdbc")
+
 include("hw21-cache")
+
 include("hw22-jpql")
 include("hw22-jpql:homework-template")
 findProject(":hw22-jpql:homework-template")?.name = "homework-template"
 include("hw24-webServer")
+
 include("hw28-springDataJdbc")
+
 include("hw25-di:mathTrainer")
+
 include("hw31-executors")
+
 include("hw32-concurrentCollections")
+
 include("hw33-multiprocess")
+
+include ("hw37-webflux:source")
+include ("hw37-webflux:processor")
+include ("hw37-webflux:client")
+include ("hw37-webflux-chat:client-service")
+include ("hw37-webflux-chat:datastore-service")
 
 pluginManagement {
     val jgitver: String by settings
@@ -56,4 +77,3 @@ pluginManagement {
         id("org.thymeleaf") version thymeleaf
     }
 }
-
