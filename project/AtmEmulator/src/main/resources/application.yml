@@ -15,15 +15,22 @@ spring:
     locations: classpath:db/migration
     baseline-version: 1
     baseline-on-migrate: true
-
+  thymeleaf:
+    cache: false
+  security:
+    user:
+      name: admin
+      password: admin
 
 logging:
   level:
-    root: debug
+    root: info
     ru.otus.service: DEBUG
     org:
       springframework:
         transaction: DEBUG
-        jdbc.core.JdbcTemplate: DEBUG
+        orm:
+          jpa: DEBUG
+        jdbc.core.JdbcTemplate: info
         web: DEBUG
       thymeleaf: DEBUG
