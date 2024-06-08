@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.atmemulator.entity.accounts.Account;
-import ru.otus.atmemulator.entity.Currency;
 import ru.otus.atmemulator.entity.atm.ATM;
 import ru.otus.atmemulator.entity.clients.Client;
 import ru.otus.atmemulator.service.ClientService;
@@ -32,6 +31,7 @@ public class AccountController {
         model.addAttribute("accounts", accounts);
         ATM atm = clientService.getATM();
         model.addAttribute("atm", atm);
+        model.addAttribute("allBanknotes", clientService.getAllBanknotes());
         return "accounts";
     }
 

@@ -57,18 +57,4 @@ public class ATM {
         }
         this.balance = newBalance;
     }
-
-    public void addBanknotes(Banknotes banknote, int count) {
-        banknotes.put(banknote, banknotes.getOrDefault(banknote, 0) + count);
-        updateBalance();
-    }
-
-    public void removeBanknotes(Banknotes banknote, int count) {
-        int currentCount = banknotes.getOrDefault(banknote, 0);
-        if (currentCount < count) {
-            throw new RuntimeException("Not enough banknotes");
-        }
-        banknotes.put(banknote, currentCount - count);
-        updateBalance();
-    }
 }

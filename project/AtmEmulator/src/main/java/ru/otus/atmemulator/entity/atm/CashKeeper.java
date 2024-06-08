@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.otus.atmemulator.entity.Currency;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 @Setter
@@ -31,11 +30,4 @@ public class CashKeeper {
         this.banknoteCount = banknoteCount;
     }
 
-    public BigDecimal getTotalAmount(Currency currency, BigDecimal banknoteValue) {
-        return banknoteValue.multiply(BigDecimal.valueOf(banknoteCount.getOrDefault(currency, 0)));
-    }
-
-    public int getBanknoteCount(Currency currency) {
-        return banknoteCount.getOrDefault(currency, 0);
-    }
 }

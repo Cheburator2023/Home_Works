@@ -14,11 +14,14 @@ import ru.otus.atmemulator.repository.AccountRepository;
 import ru.otus.atmemulator.repository.ClientRepository;
 
 import jakarta.annotation.PostConstruct;
+
 import java.math.BigDecimal;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ClientService {
@@ -66,7 +69,7 @@ public class ClientService {
             Random random = new Random();
 
             for (Banknotes banknote : Banknotes.values()) {
-                int count = random.nextInt(100); // Случайное количество банкнот
+                int count = random.nextInt(100);
                 initialBanknotes.put(banknote, count);
             }
 
@@ -132,5 +135,9 @@ public class ClientService {
             }
         }
         return false;
+    }
+
+    public List<Banknotes> getAllBanknotes() {
+        return Stream.of(Banknotes.values()).collect(Collectors.toList());
     }
 }

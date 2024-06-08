@@ -37,6 +37,13 @@
     </tbody>
 </table>
 
+<h2>Банкомат принимает и выдает купюры:</h2>
+<ul>
+    <li th:each="banknote : ${allBanknotes}">
+        <span th:text="${banknote}">Banknote</span>
+    </li>
+</ul>
+
 <script>
     $(document).ready(function() {
         $('form').on('submit', function(event) {

@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.otus.atmemulator.entity.clients.Client;
 import ru.otus.atmemulator.repository.ClientRepository;
@@ -19,12 +18,9 @@ public class ClientDetailsService implements UserDetailsService {
     private static final Logger logger = LoggerFactory.getLogger(ClientDetailsService.class);
 
     private final ClientRepository clientRepository;
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
-    public ClientDetailsService(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
+    public ClientDetailsService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -45,14 +41,4 @@ public class ClientDetailsService implements UserDetailsService {
                 .roles("USER")
                 .build();
     }
-
-//    @Transactional
-//    public void createAdminUser() {
-//        if (clientRepository.findByUsername("admin").isEmpty()) {
-//            Client admin = new Client();
-//            admin.setUsername("admin");
-//            admin.setPassword(passwordEncoder.encode("password"));
-//            clientRepository.save(admin);
-//        }
-//    }
 }
