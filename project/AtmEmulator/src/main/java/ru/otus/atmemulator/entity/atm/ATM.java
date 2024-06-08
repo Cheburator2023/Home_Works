@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.otus.atmemulator.entity.Banknotes;
 import ru.otus.atmemulator.entity.Currency;
 
 import java.math.BigDecimal;
+import java.util.EnumMap;
 import java.util.Map;
 
 @Setter
@@ -27,7 +29,46 @@ public class ATM {
     @Column(name = "balance")
     private Map<Currency, BigDecimal> balance;
 
-    public ATM(Map<Currency, BigDecimal> balance) {
+    @ElementCollection
+    @CollectionTable(name = "atm_banknotes", joinColumns = @JoinColumn(name = "atm_id"))
+    @MapKeyColumn(name = "banknote")
+    @MapKeyEnumerated(EnumType.STRING)
+    @Column(name = "count")
+    private Map<Banknotes, Integer> banknotes;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cash_keeper_id", referencedColumnName = "id")
+    private CashKeeper cashKeeper;
+
+    public ATM(Map<Currency, BigDecimal> balance, Map<Banknotes, Integer> banknotes, CashKeeper cashKeeper) {
         this.balance = balance;
+        this.banknotes = banknotes;
+        this.cashKeeper = cashKeeper;
+        updateBalance();
+    }
+
+    public void updateBalance() {
+        Map<Currency, BigDecimal> newBalance = new EnumMap<>(Currency.class);
+        for (Banknotes banknote : Banknotes.values()) {
+            Currency currency = banknote.getCurrency();
+            BigDecimal nominal = BigDecimal.valueOf(banknote.getNominal());
+            int count = banknotes.getOrDefault(banknote, 0);
+            newBalance.put(currency, newBalance.getOrDefault(currency, BigDecimal.ZERO).add(nominal.multiply(BigDecimal.valueOf(count))));
+        }
+        this.balance = newBalance;
+    }
+
+    public void addBanknotes(Banknotes banknote, int count) {
+        banknotes.put(banknote, banknotes.getOrDefault(banknote, 0) + count);
+        updateBalance();
+    }
+
+    public void removeBanknotes(Banknotes banknote, int count) {
+        int currentCount = banknotes.getOrDefault(banknote, 0);
+        if (currentCount < count) {
+            throw new RuntimeException("Not enough banknotes");
+        }
+        banknotes.put(banknote, currentCount - count);
+        updateBalance();
     }
 }

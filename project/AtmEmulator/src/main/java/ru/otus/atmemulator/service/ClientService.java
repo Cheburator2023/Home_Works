@@ -5,6 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.otus.atmemulator.entity.atm.ATM;
 import ru.otus.atmemulator.entity.accounts.Account;
+import ru.otus.atmemulator.entity.atm.CashKeeper;
+import ru.otus.atmemulator.entity.Banknotes;
 import ru.otus.atmemulator.entity.Currency;
 import ru.otus.atmemulator.entity.clients.Client;
 import ru.otus.atmemulator.repository.ATMRepository;
@@ -16,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Service
 public class ClientService {
@@ -52,11 +55,22 @@ public class ClientService {
         }
 
         if (atmRepository.count() == 0) {
+            Map<Currency, Integer> initialBanknoteCount = new EnumMap<>(Currency.class);
+            initialBanknoteCount.put(Currency.RUB, 1000);
+            initialBanknoteCount.put(Currency.DOLLAR, 500);
+            initialBanknoteCount.put(Currency.EURO, 300);
+            CashKeeper cashKeeper = new CashKeeper(initialBanknoteCount);
+
             Map<Currency, BigDecimal> initialBalance = new EnumMap<>(Currency.class);
-            initialBalance.put(Currency.RUB, BigDecimal.valueOf(10000));
-            initialBalance.put(Currency.DOLLAR, BigDecimal.valueOf(5000));
-            initialBalance.put(Currency.EURO, BigDecimal.valueOf(3000));
-            ATM atm = new ATM(initialBalance);
+            Map<Banknotes, Integer> initialBanknotes = new EnumMap<>(Banknotes.class);
+            Random random = new Random();
+
+            for (Banknotes banknote : Banknotes.values()) {
+                int count = random.nextInt(100); // Случайное количество банкнот
+                initialBanknotes.put(banknote, count);
+            }
+
+            ATM atm = new ATM(initialBalance, initialBanknotes, cashKeeper);
             atmRepository.save(atm);
         }
     }
@@ -77,6 +91,10 @@ public class ClientService {
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
         ATM atm = atmRepository.findById(1L).orElseThrow(() -> new RuntimeException("ATM not found"));
 
+        if (!isAmountValid(amount, account.getCurrency())) {
+            throw new RuntimeException("Amount must be a multiple of the banknote denomination");
+        }
+
         account.setBalance(account.getBalance().add(amount));
         atm.getBalance().put(account.getCurrency(), atm.getBalance().get(account.getCurrency()).add(amount));
 
@@ -96,10 +114,23 @@ public class ClientService {
             throw new RuntimeException("ATM has insufficient funds");
         }
 
+        if (!isAmountValid(amount, account.getCurrency())) {
+            throw new RuntimeException("Amount must be a multiple of the banknote denomination");
+        }
+
         account.setBalance(account.getBalance().subtract(amount));
         atm.getBalance().put(account.getCurrency(), atm.getBalance().get(account.getCurrency()).subtract(amount));
 
         accountRepository.save(account);
         atmRepository.save(atm);
+    }
+
+    private boolean isAmountValid(BigDecimal amount, Currency currency) {
+        for (Banknotes banknote : Banknotes.values()) {
+            if (banknote.getCurrency() == currency && amount.remainder(BigDecimal.valueOf(banknote.getNominal())).compareTo(BigDecimal.ZERO) == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

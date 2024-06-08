@@ -24,3 +24,27 @@ CREATE TABLE atm_balance (
                              PRIMARY KEY (atm_id, currency),
                              FOREIGN KEY (atm_id) REFERENCES atm(id)
 );
+
+CREATE TABLE cash_keeper (
+    id BIGSERIAL PRIMARY KEY
+);
+
+CREATE TABLE cash_keeper_balance (
+                                     cash_keeper_id BIGINT NOT NULL,
+                                     currency VARCHAR(255) NOT NULL,
+                                     count INT NOT NULL,
+                                     PRIMARY KEY (cash_keeper_id, currency),
+                                     FOREIGN KEY (cash_keeper_id) REFERENCES cash_keeper(id)
+);
+
+CREATE TABLE atm_banknotes (
+                               atm_id BIGINT NOT NULL,
+                               banknote VARCHAR(255) NOT NULL,
+                               count INT NOT NULL,
+                               PRIMARY KEY (atm_id, banknote),
+                               FOREIGN KEY (atm_id) REFERENCES atm(id)
+);
+
+ALTER TABLE atm
+    ADD COLUMN cash_keeper_id BIGINT,
+ADD FOREIGN KEY (cash_keeper_id) REFERENCES cash_keeper(id);
