@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Положить евро</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1>Положить евро</h1>
+<form th:action="@{/accounts/deposit}" method="post">
+  <input type="hidden" name="currency" value="EUR">
+  <div th:each="banknote : ${banknotes}">
+    <label th:for="${banknote.name()}"><span th:text="${banknote.name()}"></span>:</label>
+    <input type="number" th:id="${banknote.name()}" th:name="${banknote.name()}" min="0">
+  </div>
+  <button type="submit">Положить</button>
+</form>
+<p>Количество вносимых купюр не должно превышать 100шт</p>
+</body>
+</html>

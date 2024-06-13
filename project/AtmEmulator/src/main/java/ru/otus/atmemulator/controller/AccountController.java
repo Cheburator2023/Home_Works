@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.otus.atmemulator.entity.accounts.Account;
 import ru.otus.atmemulator.entity.atm.ATM;
 import ru.otus.atmemulator.entity.clients.Client;
+import ru.otus.atmemulator.service.AccountService;
+import ru.otus.atmemulator.service.ATMService;
 import ru.otus.atmemulator.service.ClientService;
 
 import java.math.BigDecimal;
@@ -18,32 +20,36 @@ import java.util.List;
 public class AccountController {
 
     private final ClientService clientService;
+    private final AccountService accountService;
+    private final ATMService atmService;
 
     @Autowired
-    public AccountController(ClientService clientService) {
+    public AccountController(ClientService clientService, AccountService accountService, ATMService atmService) {
         this.clientService = clientService;
+        this.accountService = accountService;
+        this.atmService = atmService;
     }
 
     @GetMapping
     public String getAccounts(Model model, Authentication authentication) {
         Client client = clientService.findByUsername(authentication.getName());
-        List<Account> accounts = clientService.getAccountsByClientId(client.getId());
+        List<Account> accounts = accountService.getAccountsByClientId(client.getId());
         model.addAttribute("accounts", accounts);
-        ATM atm = clientService.getATM();
+        ATM atm = atmService.getATM(1L); // хард код т.к. в примере только один банкомат
         model.addAttribute("atm", atm);
-        model.addAttribute("allBanknotes", clientService.getAllBanknotes());
+        model.addAttribute("allBanknotes", accountService.getAllBanknotes());
         return "accounts";
     }
 
     @PostMapping("/deposit")
     public String deposit(@RequestParam Long accountId, @RequestParam BigDecimal amount) {
-        clientService.deposit(accountId, amount);
+        accountService.deposit(accountId, amount);
         return "redirect:/accounts";
     }
 
     @PostMapping("/withdraw")
     public String withdraw(@RequestParam Long accountId, @RequestParam BigDecimal amount) {
-        clientService.withdraw(accountId, amount);
+        accountService.withdraw(accountId, amount);
         return "redirect:/accounts";
     }
 }

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Снять доллары</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1>Снять доллары</h1>
+<form th:action="@{/accounts/withdraw}" method="post">
+  <input type="hidden" name="currency" value="USD">
+  <label for="amount">Введите сумму для выдачи:</label>
+  <input type="number" id="amount" name="amount" min="0">
+  <button type="submit">Снять</button>
+</form>
+<p>Ограничение на выдачу за один раз 10_000 долларов</p>
+</body>
+</html>
