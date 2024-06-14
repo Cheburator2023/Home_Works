@@ -56,6 +56,7 @@ ALTER TABLE atm
 ADD FOREIGN KEY (cash_keeper_id) REFERENCES cash_keeper(id);
 
 INSERT INTO client (username, password) VALUES ('user', '$2a$10$u.s4d1VGHBOwRGQiUfdG.un1F3b3s9vUsbEAQ0D7pqdA.FWO9H4Wi');
+-- password=password
 
 INSERT INTO account (account_number, balance, currency, client_id) VALUES
                                                                        ('RUB123', 1000.00, 'RUB', 1),
