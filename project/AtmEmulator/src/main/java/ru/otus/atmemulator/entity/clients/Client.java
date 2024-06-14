@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.otus.atmemulator.entity.accounts.Account;
-import ru.otus.atmemulator.entity.author.Author;
+import ru.otus.atmemulator.author.Author;
 
 import java.util.Set;
 

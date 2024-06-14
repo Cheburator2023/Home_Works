@@ -1,4 +1,4 @@
-package ru.otus.atmemulator.entity.author;
+package ru.otus.atmemulator.author;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
