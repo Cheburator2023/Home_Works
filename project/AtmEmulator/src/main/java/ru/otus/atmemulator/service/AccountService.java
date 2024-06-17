@@ -37,7 +37,7 @@ public class AccountService {
 
     @Transactional
     public void deposit(Long accountId, BigDecimal amount) {
-        Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new AccountNotFoundException("Account not found"));
 
         if (!isAmountValid(amount, account.getCurrency())) {
             throw new RuntimeException("Amount must be a multiple of the banknote denomination");
