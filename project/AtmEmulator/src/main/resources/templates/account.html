@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Счета</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1>Добрый день, <span th:text="${client.name}"></span></h1>
+<h2>Выберите операцию:</h2>
+<ul>
+    <li><a th:href="@{/accounts/withdraw-rub}">Снять рубли</a></li>
+    <li><a th:href="@{/accounts/withdraw-dollar}">Снять доллары</a></li>
+    <li><a th:href="@{/accounts/withdraw-euro}">Снять евро</a></li>
+    <li><a th:href="@{/accounts/deposit-rub}">Положить рубли</a></li>
+    <li><a th:href="@{/accounts/deposit-dollar}">Положить доллары</a></li>
+    <li><a th:href="@{/accounts/deposit-euro}">Положить евро</a></li>
+</ul>
+</body>
+</html>

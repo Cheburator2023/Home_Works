@@ -29,7 +29,7 @@ public class ClientController {
             return "clients/list";
         } catch (Exception e) {
             logger.error("Error listing clients", e);
-            throw e; // Re-throw the exception to let the framework handle it
+            throw e;
         }
     }
 
@@ -40,8 +40,6 @@ public class ClientController {
             if (clientOpt.isPresent()) {
                 Client client = clientOpt.get();
                 model.addAttribute("client", client);
-                // Предполагается, что адрес и телефоны уже включены в объект Client
-                // Если это не так, вам может потребоваться дополнительная логика для их извлечения
             } else {
                 model.addAttribute("client", null);
             }
